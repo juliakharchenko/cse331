@@ -12,7 +12,10 @@
 package setup;
 
 import java.lang.Iterable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Iterator;
+import java.util.Comparator;
 
 /**
  * This is a container can be used to contain Balls. The key
@@ -27,13 +30,19 @@ public class Box implements Iterable<Ball> {
     private BallContainer ballContainer;
 
     /**
+     * maxVolume stores the maximum volume of balls that can be stored in this Box
+     */
+    private double maxVolume;
+
+    /**
      * Constructor that creates a new box.
      *
      * @param maxVolume Total volume of balls that this box can contain.
      */
     public Box(double maxVolume) {
         // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        ballContainer = new BallContainer();
+        this.maxVolume = maxVolume;
     }
 
     /**
@@ -65,7 +74,8 @@ public class Box implements Iterable<Ball> {
      */
     public boolean add(Ball b) {
         // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        return (b.getVolume() + ballContainer.getVolume() <= maxVolume && ballContainer.add(b));
+
     }
 
     /**
@@ -78,9 +88,33 @@ public class Box implements Iterable<Ball> {
      */
     public Iterator<Ball> getBallsFromSmallest() {
         // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        List<Ball> balls = new ArrayList<>();
+        Iterator<Ball> returnedBalls = iterator();
+        while (returnedBalls.hasNext()) {
+            balls.add(returnedBalls.next());
+        }
+        balls.sort(new CompareBalls());
+        return balls.iterator();
     }
 
+    /**
+     * Private helper class that implements Comparator to compare two
+     * balls based on their respective volumes.
+     */
+    private static class CompareBalls implements Comparator<Ball> {
+
+        /**
+         * Compares two balls based on their volumes.
+         * @param b1 first ball.
+         * @param b2 second ball.
+         * @return an integer greater than 0 if b1 volume is greater than b2 volume.
+         * Returns an integer less than 0 if b1 volume is less than b2 volume.
+         * Returns 0 if the volumes of b1 and b2 are the same.
+         */
+        public int compare(Ball b1, Ball b2) {
+            return Double.compare(b1.getVolume(), b2.getVolume());
+        }
+    }
     /**
      * Removes a ball from the box. This method returns
      * <code>true</code> if ball was successfully removed from the

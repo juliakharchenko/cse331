@@ -20,7 +20,7 @@ public class Ball {
     /**
      * The volume of the Ball.
      */
-    private double volume;
+    private final double volume;
 
     /**
      * Constructor that creates a new ball object with the specified volume.
@@ -28,7 +28,7 @@ public class Ball {
      * @param volume Volume of the new object.
      */
     public Ball(double volume) {
-        volume = volume;
+        this.volume = volume;
     }
 
     /**
@@ -37,7 +37,7 @@ public class Ball {
      * @return the volume of the Ball.
      */
     public double getVolume() {
-        return 0;
+        return volume;
     }
 
 }
