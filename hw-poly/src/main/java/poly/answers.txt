@@ -3,24 +3,163 @@
 ###########################################################################
 
 1. Multiplication Pseudocode
-
+r = p * q:
+    - set r = 0
+    - {Inv: r = q_0*p_0 + q_0*p_1 + ... + q_0(p_j-1) + q_1*p_0 + ... + q_i-1*(p_j-1),
+      where q_i is the ith term in q and p_j is the jth term in p}
+    - foreach term, t_p, in p:
+        - {Inv: r = r + q_0*t_p + q_1*t_p + ... + q_i-1*t_p)
+        - foreach term, t_q in q:
+            - set t_pq to the product of t_p * t_q
+            - if any term, t_r, in r has the same degree as t_pq,
+                - then, replace t_r in r with the sum of t_r and t_pq
+                - else, insert t_pq into r as a new term
 
 
 2. Division Pseudocode
-
+r = p / q:
+    - set r = 0
+    - {Inv}
+    - while highest degree term, t_ph, in p is >= highest degree term, t_qh, in  q:
+        - set t_quotient = t_ph / t_qh
+        - insert t_quotient into r as a new term
+        - set = 0
+        - foreach term, t_q, in q:
+            - set t_qr = t_q * t_quotient
+            - if any term, t_s, in s has the same degree as t_qr:
+                - then, replace t_s with the sum of t_s & t_qr
+                - else, insert t_qr into s as a new term
+        - foreach term, t_s, in s:
+            - if any term, t_p, has the same degree as t_s:
+                - then, replace t_p with the difference of t_p & t_s
+                - else, insert -t_s (negative of t_s) into p as a new term
 
 
 3. Division Example: (x3+x-1) / (x+1) = x2-x+2
-
-
-
+    - r = 0
+    - p = x^3 + x - 1
+    - q = x + 1
+    - Iteration 1:
+        - t_ph = x^3, t_qh = x
+        - [while highest degree term, t_ph, in p is >= highest degree term, t_qh, in q] YES, 3 >= 1
+            - t_quotient = (x^3 / x) = x^2
+            - [insert t_quotient into r as a new term] r = x^2
+            - s = 0
+            - foreach term, t_q, in q:
+                - Iteration 1.1.1:
+                    - t_q = x, t_qr = (x * x^2) = x^3
+                    - [if any term, t_s, in s has the same degree as t_qr] NO
+                        - [then, replace t_s with the sum of t_s & t_qr]
+                        - [else, insert t_qr into s as a new term] s = x^3
+                - Iteration 1.1.2:
+                    - t_q = 1, t_qr = (1 * x^2) = x^2
+                    - [if any term, t_s, in s has the same degree as t_qr] NO
+                        - [then, replace t_s with the sum of t_s & t_qr]
+                        - [else, insert t_qr into s as a new term] s = x^3 + x^2
+            - foreach term, t_s, in s:
+                - Iteration 1.2.1:
+                    - t_s = x^3
+                    - [if any term, t_p, in p has the same degree as t_s] YES, t_p = x^3
+                        - [then, replace t_p with the difference of t_p & t_s] t_p = x^3 - x^3 = 0
+                        - [else, insert -t_s (negative of t_s) into p as a new term]
+                - Iteration 1.2.2:
+                    - t_s = x^2
+                    - [if any term, t_p, in p has the same degree as t_s] NO
+                    - [then, replace t_p with the difference of t_p & t_s]
+                    - [else, insert -t_s (negative of t_s) into p as a new term] t_p = 0 + (-x^2) = -x^2
+    - Iteration 2: p = -x^2 + x - 1, q = x + 1, r = x^2
+        - t_ph = -x^2, t_qh = x
+        - [while highest degree term, t_ph, in p is >= highest degree term, t_qh, in q] YES, 2 >= 1
+            - t_quotient = (-x^2 / x) = -x
+            - [insert t_quotient into r as a new term] r = x^2 - x
+            - s = 0
+            - foreach term, t_q, in q:
+                - Iteration 2.1.1:
+                    - t_q = x, t_qr = (x * -x) = -x^2
+                    - [if any term, t_s, in s has the same degree as t_qr] NO
+                        - [then, replace t_s with the sum of t_s & t_qr]
+                        - [else, insert t_qr into s as a new term] s = -x^2
+                - Iteration 2.1.2:
+                    - t_q = 1, t_qr = (1 * -x) = -x
+                    - [if any term, t_s, in s has the same degree as t_qr] NO
+                        - [then, replace t_s with the sum of t_s & t_qr]
+                        - [else, insert t_q into s as a new term] s = -x^2 - x
+            - foreach term, t_s, in s:
+                - Iteration 2.2.1:
+                    - t_s = -x^2
+                    - [if any term, t_p, in p has the same degree as t_s] YES, t_p = -x^2
+                        - [then, replace t_p with the difference of t_p & t_s] t_p= -x^2 - (-x^2) = 0
+                        - [else, insert -t_s (negative of t_s) into p as a new term]
+                - Iteration 2.2.2:
+                    - t_s = -x
+                    - [if any term, t_p, in p has the same degree as t_s] YES, t_p = x
+                        - [then, replace t_p with the difference of t_p & t_s] t_p= x - (-x) = 2x
+                        - [else, insert -t_s (negative of t_s) into p as a new term]
+    - Iteration 3: p = 2x - 1, q = x + 1, r = x^2 - x
+        -t_ph = 2x, t_qh = x
+        - [while highest degree term, t_ph, in p is >= highest degree term, t_qh, in q] YES, 1 >= 1
+            - t_quotient = (2x / x) = 2
+            - [insert t_quotient into r as a new term] r = x^2 - x + 2
+            - s = 0
+            - foreach term, t_q, in q:
+                - Iteration 3.1.1:
+                    - t_q = x, t_qr = (x * 2) = 2x
+                    - [if any term, t_s, in s has the degree as t_qr] NO
+                        - [then, replace t_s with the sum of t_s & t_qr]
+                        - [else, insert t_qr into s as a new term] s = 2x
+                - Iteration 3.1.2:
+                    - t_q = 1, t_qr = (1 * 2) = 2
+                    - [if any term, t_s, in s has the degree as t_qr] NO
+                        - [then, replace t_s with the sum of t_s & t_qr]
+                        - [else, insert t_qr into s as a new term] s = 2x + 2
+            - foreach term, t_s, in s:
+                - Iteration 3.2.1:
+                    - t_s = 2x
+                    - [if any term, t_p, in p has the same degree as t_s] YES t_p = 2x
+                        - [then, replace t_s with the difference of t_p & t_s] t_p = 2x - 2x = 0
+                        -[else, insert -t_s (negative of t_s) into p as a new term]
+                - Iteration 3.2.2:
+                    - t_s = 2
+                    - [if any term, t_p, in p has the same degree as t_s] YES t_p = -1
+                        - [then, replace t_s with the difference of t_p & t_s] t_p = -1 - 2 = -3
+                        - [else, insert -t_s (negative of t_s) into p as a new term]
+    - Iteration 4: p = -3, q = x + 1, r = x^2 - x + 2
+        - t_ph = -3, t_qh = x
+        - [while highest degree term, t_ph, in p is >= highest degree term, t_qh, in q] NO, 0 !>= 1
+    - We are done! r = (x^2 - x + 2)
 
 ## Part 1
 ###########################################################################
 
 1. Weakened Rep Invariant
+   Methods/Constructors to change:
+   a) RatNum(int n, int d) no longer needs to compute the greatest common denominator and
+      the reduced form of n / d (lines 95-97 can to be removed). This is less efficient since instead
+      of computing the reduced form in the constructor, in order to continue following the
+      specification we have to compute the reduced form in the toString() method and the
+      hashCode() method (when two RatNums are equal to each other).
+   b) checkRep() no longer needs to make an assertion if denom > 0 (no longer checks
+      if RatNum is in lowest form) since the new rep invariant is only (denom >= 0). Lines 116-119
+      need to be removed. This is advantageous since one less assertion is made, hence, improving
+      efficiency.
+   c) hashCode() would need to compute the greatest common denominator and divide both numer and
+      denom by the gcd. This is done by adding the following lines after line 325:
+      int gcd = gcd(numer, denom);
+      numer /= gcd;
+      denom /= gcd;
 
-
+      This improves code clarity, since RatNum's with the same reduced lowest form should have the
+      same hashCode. Adding these lines to the method will assure two equal RatNum's have the same
+      hashCode.
+   d) equals() needs to be changed so that the return statement in the else condition (line 345)
+      is "return (this.numer * rn.demon == this.denom * rn.numer)". This improves code clarity
+      since RatNums that are equal but of different forms (not in reduced form) return true.
+      This is an example of cross multiplication to verify if two rational numbers are
+      equivalent.
+   e) toString() needs to be changed so that in the "else if(denom != 1)" statement, the gcd is
+      computed and numer and denom are both divided by gcd (lines 147-149 of answers.txt). This
+      improves code quality, since toString() now outputs fractions in reduced form, adhering to
+      the specification.
 
 2. Alternate add, sub, mul, div
 
