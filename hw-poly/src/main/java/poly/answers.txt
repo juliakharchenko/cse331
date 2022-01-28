@@ -19,11 +19,12 @@ r = p * q:
 2. Division Pseudocode
 r = p / q:
     - set r = 0
+    - set c = p by making a term-by-term copy of all terms in p to c
     - {Inv}
     - while highest degree term, t_ph, in p is >= highest degree term, t_qh, in  q:
         - set t_quotient = t_ph / t_qh
         - insert t_quotient into r as a new term
-        - set = 0
+        - set s = 0
         - foreach term, t_q, in q:
             - set t_qr = t_q * t_quotient
             - if any term, t_s, in s has the same degree as t_qr:
@@ -162,11 +163,18 @@ r = p / q:
       the specification.
 
 2. Alternate add, sub, mul, div
-
+   This fails to meet the specifications of the methods since the specification does not include a
+   modifies clause. The new versions of the method modify numer and denom which also means class
+   specifications aren't abided by since RatNum is supposed to represent an immutable rational
+   number. The new versions of the methods cause properties of the RatNum object to be mutated.
 
 
 3. Constructor checkReps
-
+   We don't need checkRep at the start of either of the constructors because in the first
+   constructor, RatNum(int n) since denom is set to 1 which satisfies the rep invariant,
+   (denom >= 0). The second constructor, RatNum(int n, int d) will set denom to d's positive
+   counterpart if d < 0, meaning the rep invariant still holds (denom >= 0). There are also
+   no mutator methods in RatNum so instances of RatNum cannot be modified.
 
 
 

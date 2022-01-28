@@ -92,8 +92,8 @@ public final class RatPoly {
      * @spec.effects Constructs a new Poly, "0".
      */
     public RatPoly() {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly constructor is not yet implemented");
+        this(RatTerm.ZERO);
+        checkRep();
     }
 
     /**
@@ -102,8 +102,9 @@ public final class RatPoly {
      * @spec.effects Constructs a new Poly equal to "rt". If rt.isZero(), constructs a "0" polynomial.
      */
     public RatPoly(RatTerm rt) {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly constructor is not yet implemented");
+        terms = new ArrayList<>();
+        if (!rt.isZero()) terms.add(rt);
+        checkRep();
     }
 
     /**
@@ -138,7 +139,8 @@ public final class RatPoly {
      */
     public int degree() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.degree() is not yet implemented");
+        if (terms.isEmpty()) return 0;
+        return terms.get(0).getExpt();
     }
 
     /**
@@ -150,8 +152,11 @@ public final class RatPoly {
      * @spec.requires !this.isNaN()
      */
     public RatTerm getTerm(int deg) {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.getTerm() is not yet implemented");
+        if (terms.isEmpty()) return RatTerm.ZERO;
+        for (RatTerm r: terms) {
+            if (r.getExpt() == deg) return r;
+        }
+        return RatTerm.ZERO;
     }
 
     /**
@@ -160,8 +165,11 @@ public final class RatPoly {
      * @return true if and only if this has some coefficient = "NaN"
      */
     public boolean isNaN() {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.isNaN() is not yet implemented");
+        if (terms.isEmpty()) return false;
+        for (RatTerm r: terms) {
+            if (r.isNaN()) return true;
+        }
+        return false;
     }
 
     /**
@@ -176,26 +184,12 @@ public final class RatPoly {
      * @see RatTerm regarding (C . E) notation
      */
     private static void scaleCoeff(List<RatTerm> lst, RatNum scalar) {
-        // TODO: Fill in this method as specified, modify it to your liking, or remove it.
-        // Do not leave this method as-is. You must either use it somehow or remove it.
-        throw new RuntimeException("RatPoly.scaleCoeff() is not yet implemented");
-    }
-
-    /**
-     * Increments exponents within 'lst' by 'degree' (helper procedure).
-     *
-     * @param lst    the RatTerms whose exponents are to be incremented
-     * @param degree the value by which to increment exponents in lst
-     * @spec.requires lst != null
-     * @spec.modifies lst
-     * @spec.effects Forall i s.t. 0 <= i < lst.size(), if (C . E) = lst.get(i) then lst_post.get(i) =
-     * (C . E+degree)
-     * @see RatTerm regarding (C . E) notation
-     */
-    private static void incremExpt(List<RatTerm> lst, int degree) {
-        // TODO: Fill in this method as specified, modify it to your liking, or remove it.
-        // Do not leave this method as-is. You must either use it somehow or remove it.
-        throw new RuntimeException("RatPoly.incremExpt() is not yet implemented");
+        if (scalar.equals(RatNum.ZERO)) lst.clear();
+        else if (!lst.isEmpty()) {
+            for (int i = 0; i < lst.size(); i++) {
+                lst.set(i, new RatTerm(lst.get(i).getCoeff().mul(scalar), lst.get(i).getExpt()));
+            }
+        }
     }
 
     /**
@@ -221,7 +215,21 @@ public final class RatPoly {
     private static void sortedInsert(List<RatTerm> lst, RatTerm newTerm) {
         // TODO: Fill in this method, then remove the RuntimeException
         // Note: Some of the provided code in this class relies on this method working as-specified.
-        throw new RuntimeException("RatPoly.sortedInsert() is not yet implemented");
+        if (newTerm.isZero()) return;
+        for (int i = 0; i < lst.size(); i++) {
+            if (newTerm.getExpt() > lst.get(i).getExpt()) {
+                lst.add(i, newTerm);
+                return;
+            } else if (newTerm.getExpt() == lst.get(i).getExpt()) {
+                lst.set(i, lst.get(i).add(newTerm));
+                if (lst.get(i).isZero()) {
+                    lst.remove(i);
+                    i--;
+                }
+                return;
+            }
+        }
+        lst.add(newTerm);
     }
 
     /**
@@ -232,7 +240,10 @@ public final class RatPoly {
     public RatPoly negate() {
     	// TODO: Fill in this method, then remove the RuntimeException
         // Note: Some of the provided code in this class relies on this method working as-specified.
-        throw new RuntimeException("RatPoly.negate() is not yet implemented");
+        if (this.isNaN()) return RatPoly.NaN;
+        List<RatTerm> copy = new ArrayList<>(terms);
+        scaleCoeff(copy, new RatNum(-1));
+        return new RatPoly(copy);
     }
 
     /**
@@ -244,8 +255,14 @@ public final class RatPoly {
      * @spec.requires p != null
      */
     public RatPoly add(RatPoly p) {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.add() is not yet implemented");
+        //p.checkRep();
+        if (this.isNaN() || p.isNaN()) return RatPoly.NaN;
+        if (terms.isEmpty()) return p;
+        List<RatTerm> r = new ArrayList<>(p.terms);
+        for (RatTerm t: terms) {
+            sortedInsert(r, t);
+        }
+        return new RatPoly(r);
     }
 
     /**
@@ -257,9 +274,7 @@ public final class RatPoly {
      * @spec.requires p != null
      */
     public RatPoly sub(RatPoly p) {
-        // TODO: Fill in this method, then remove the RuntimeException
-        // Note: Some of the provided code in this class relies on this method working as-specified.
-        throw new RuntimeException("RatPoly.sub() is not yet implemented");
+        return this.add(p.negate());
     }
 
     /**
@@ -271,8 +286,19 @@ public final class RatPoly {
      * @spec.requires p != null
      */
     public RatPoly mul(RatPoly p) {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.mul() is not yet implemented");
+        p.checkRep();
+        if (this.isNaN() || p.isNaN()) return RatPoly.NaN;
+        if(p.terms.isEmpty()) return new RatPoly();
+        List<RatTerm> r = new ArrayList<>();
+        for (RatTerm t : terms) {
+            for (RatTerm tp : p.terms) {
+                RatTerm multiplied = t.mul(tp);
+                sortedInsert(r, multiplied);
+            }
+
+        }
+        checkRep();
+        return new RatPoly(r);
     }
 
     /**
@@ -309,8 +335,17 @@ public final class RatPoly {
      * @spec.requires p != null
      */
     public RatPoly div(RatPoly p) {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.div() is not yet implemented");
+        if (p.terms.isEmpty() || this.isNaN() || p.isNaN()) return RatPoly.NaN;
+        RatPoly r = new RatPoly();
+        RatPoly c = new RatPoly(new ArrayList<>(terms));
+        while (!c.terms.isEmpty() && c.degree() >= p.degree()) {
+            RatTerm quotient = c.terms.get(0).div(p.terms.get(0));
+            sortedInsert(r.terms, quotient);
+            RatPoly pq = p.mul(new RatPoly(quotient));
+            c = c.sub(pq);
+        }
+        c.checkRep();
+        return r;
     }
 
     /**
@@ -321,8 +356,12 @@ public final class RatPoly {
      * is 5, and "x^2-x" evaluated at 3 is 6. If (this.isNaN() == true), return Double.NaN.
      */
     public double eval(double d) {
-        // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.eval() is not yet implemented");
+        if (this.isNaN()) return Double.NaN;
+        double evaluated = 0.0;
+        for (RatTerm t: terms) {
+            evaluated += t.eval(d);
+        }
+        return evaluated;
     }
 
     /**
