@@ -138,7 +138,6 @@ public final class RatPoly {
      * @spec.requires !this.isNaN()
      */
     public int degree() {
-        // TODO: Fill in this method, then remove the RuntimeException
         if (terms.isEmpty()) return 0;
         return terms.get(0).getExpt();
     }
@@ -186,6 +185,7 @@ public final class RatPoly {
     private static void scaleCoeff(List<RatTerm> lst, RatNum scalar) {
         if (scalar.equals(RatNum.ZERO)) lst.clear();
         else if (!lst.isEmpty()) {
+            // {Inv: lst != null & lst_i = lst_i * scalar, where lst_i is the ith term in lst}
             for (int i = 0; i < lst.size(); i++) {
                 lst.set(i, new RatTerm(lst.get(i).getCoeff().mul(scalar), lst.get(i).getExpt()));
             }
@@ -213,9 +213,8 @@ public final class RatPoly {
      * cofind(lst,newTerm.getExpt()) + newTerm.getCoeff())
      */
     private static void sortedInsert(List<RatTerm> lst, RatTerm newTerm) {
-        // TODO: Fill in this method, then remove the RuntimeException
-        // Note: Some of the provided code in this class relies on this method working as-specified.
         if (newTerm.isZero()) return;
+        // {Inv: lst != null & lst[0...i-1] is sorted from highest degree RatTerms to lowest degree]
         for (int i = 0; i < lst.size(); i++) {
             if (newTerm.getExpt() > lst.get(i).getExpt()) {
                 lst.add(i, newTerm);
@@ -238,8 +237,6 @@ public final class RatPoly {
      * @return a RatPoly equal to "0 - this"; if this.isNaN(), returns some r such that r.isNaN()
      */
     public RatPoly negate() {
-    	// TODO: Fill in this method, then remove the RuntimeException
-        // Note: Some of the provided code in this class relies on this method working as-specified.
         if (this.isNaN()) return RatPoly.NaN;
         List<RatTerm> copy = new ArrayList<>(terms);
         scaleCoeff(copy, new RatNum(-1));
@@ -255,12 +252,16 @@ public final class RatPoly {
      * @spec.requires p != null
      */
     public RatPoly add(RatPoly p) {
-        //p.checkRep();
+        p.checkRep();
         if (this.isNaN() || p.isNaN()) return RatPoly.NaN;
         if (terms.isEmpty()) return p;
-        List<RatTerm> r = new ArrayList<>(p.terms);
-        for (RatTerm t: terms) {
-            sortedInsert(r, t);
+        List<RatTerm> r = new ArrayList<>(terms);
+        /**
+         * {Inv: r != null & p!= null & r = terms + p_0 + p_1 + ... + p_i-1,
+         * where p_i is the ith term in p}
+         */
+        for (RatTerm tp: p.terms) {
+            sortedInsert(r, tp);
         }
         return new RatPoly(r);
     }
@@ -290,14 +291,21 @@ public final class RatPoly {
         if (this.isNaN() || p.isNaN()) return RatPoly.NaN;
         if(p.terms.isEmpty()) return new RatPoly();
         List<RatTerm> r = new ArrayList<>();
+        /**
+         * {Inv: r != null & r = q_0*p_0 + q_0*p_1 + ... + q_0(p_j-1) + q_1*p_0
+         * + ... + q_i-1*(p_j-1), where q_i is the ith term in terms and p_j is the jth term in p}
+         */
         for (RatTerm t : terms) {
+            /**
+             * {Inv: r = r + t_q*p_0 + t_q*p_1 + t_q*p_2 + ... + t_q*p_j-1, where p_j is the jth
+             * term in p and t_q is the current term in terms}
+             */
             for (RatTerm tp : p.terms) {
                 RatTerm multiplied = t.mul(tp);
                 sortedInsert(r, multiplied);
             }
 
         }
-        checkRep();
         return new RatPoly(r);
     }
 
@@ -335,16 +343,21 @@ public final class RatPoly {
      * @spec.requires p != null
      */
     public RatPoly div(RatPoly p) {
+        p.checkRep();
         if (p.terms.isEmpty() || this.isNaN() || p.isNaN()) return RatPoly.NaN;
         RatPoly r = new RatPoly();
         RatPoly c = new RatPoly(new ArrayList<>(terms));
+        /**
+         * Inv: this = p_0*t_quotient + p_1*t_quotient + ... + p_i-1*t_quotient where p_i is the
+         * ith term in p}
+         */
         while (!c.terms.isEmpty() && c.degree() >= p.degree()) {
             RatTerm quotient = c.terms.get(0).div(p.terms.get(0));
             sortedInsert(r.terms, quotient);
             RatPoly pq = p.mul(new RatPoly(quotient));
             c = c.sub(pq);
         }
-        c.checkRep();
+        r.checkRep();
         return r;
     }
 
@@ -358,6 +371,11 @@ public final class RatPoly {
     public double eval(double d) {
         if (this.isNaN()) return Double.NaN;
         double evaluated = 0.0;
+        /**
+         * {Inv: evaluated = evaluated + (C(this, t_0) * d^E(this, t_0)) +
+         * (C(this, t_1) * d^E(this, t_1)) + ... + (C(this, t_i-1) * d^E(this, t_i-1)),
+         * where t_i is the ith term in terms}
+         */
         for (RatTerm t: terms) {
             evaluated += t.eval(d);
         }

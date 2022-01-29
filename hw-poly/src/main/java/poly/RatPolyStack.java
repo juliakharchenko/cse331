@@ -94,7 +94,9 @@ public final class RatPolyStack implements Iterable<RatPoly> {
      */
     public RatPoly pop() {
         checkRep();
-        return polys.pop();
+        RatPoly popped = polys.pop();
+        checkRep();
+        return popped;
     }
 
     /**
@@ -148,6 +150,10 @@ public final class RatPolyStack implements Iterable<RatPoly> {
     public RatPoly getNthFromTop(int index) {
         checkRep();
         Stack<RatPoly> temp = new Stack<>();
+        /**
+         * {Inv: i < index & temp = the reverse order of 'this' for the first i elements
+         * of 'this' starting from the top of the stack}
+         */
         for (int i = 0; i < index; i++) temp.push(this.pop());
         RatPoly indexed = polys.peek();
         while (!temp.isEmpty()) {

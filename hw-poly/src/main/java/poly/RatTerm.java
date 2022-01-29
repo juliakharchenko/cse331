@@ -82,14 +82,12 @@ public final class RatTerm {
      * t.expt = 0, otherwise t.expt = e
      */
     public RatTerm(RatNum c, int e) {
-        // TODO: Fill in this method, then remove the RuntimeException
         if (c.equals(RatNum.ZERO)) {
-            coeff = RatNum.ZERO;
             expt = 0;
         } else {
-            coeff = c;
             expt = e;
         }
+        coeff = c;
         checkRep();
     }
 
@@ -129,8 +127,6 @@ public final class RatTerm {
      * is 12. if (this.isNaN() == true), return Double.NaN
      */
     public double eval(double d) {
-        // TODO: Fill in this method, then remove the RuntimeException
-        // Hint: You may find java.lang.Math's pow() method useful.
         if (this.isNaN()) return Double.NaN;
         return (coeff.doubleValue() * Math.pow(d, expt));
     }
@@ -141,7 +137,6 @@ public final class RatTerm {
      * @return a RatTerm equals to (-this). If this is NaN, then returns NaN.
      */
     public RatTerm negate() {
-        // TODO: Fill in this method, then remove the RuntimeException
         if (this.isNaN()) return NaN;
         return new RatTerm(coeff.negate(), expt);
     }

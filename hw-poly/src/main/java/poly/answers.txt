@@ -20,111 +20,43 @@ r = p * q:
 r = p / q:
     - set r = 0
     - set c = p by making a term-by-term copy of all terms in p to c
-    - {Inv}
+    - {Inv: p = q_0*t_quotient + q_1*t_quotient + ... + q_i-1*t_quotient where q_i is the
+       ith term in q}
     - while highest degree term, t_ph, in p is >= highest degree term, t_qh, in  q:
         - set t_quotient = t_ph / t_qh
         - insert t_quotient into r as a new term
-        - set s = 0
-        - foreach term, t_q, in q:
-            - set t_qr = t_q * t_quotient
-            - if any term, t_s, in s has the same degree as t_qr:
-                - then, replace t_s with the sum of t_s & t_qr
-                - else, insert t_qr into s as a new term
-        - foreach term, t_s, in s:
-            - if any term, t_p, has the same degree as t_s:
-                - then, replace t_p with the difference of t_p & t_s
-                - else, insert -t_s (negative of t_s) into p as a new term
+        - set cq = c_0*t_quotient + c_1*t_quotient + ... + c_i-1*t_quotient where c_i is the
+          ith term in c
+        - set c = c - cq;
 
 
 3. Division Example: (x3+x-1) / (x+1) = x2-x+2
     - r = 0
     - p = x^3 + x - 1
+    - c = x^3 + x - 1
     - q = x + 1
     - Iteration 1:
         - t_ph = x^3, t_qh = x
         - [while highest degree term, t_ph, in p is >= highest degree term, t_qh, in q] YES, 3 >= 1
             - t_quotient = (x^3 / x) = x^2
             - [insert t_quotient into r as a new term] r = x^2
-            - s = 0
-            - foreach term, t_q, in q:
-                - Iteration 1.1.1:
-                    - t_q = x, t_qr = (x * x^2) = x^3
-                    - [if any term, t_s, in s has the same degree as t_qr] NO
-                        - [then, replace t_s with the sum of t_s & t_qr]
-                        - [else, insert t_qr into s as a new term] s = x^3
-                - Iteration 1.1.2:
-                    - t_q = 1, t_qr = (1 * x^2) = x^2
-                    - [if any term, t_s, in s has the same degree as t_qr] NO
-                        - [then, replace t_s with the sum of t_s & t_qr]
-                        - [else, insert t_qr into s as a new term] s = x^3 + x^2
-            - foreach term, t_s, in s:
-                - Iteration 1.2.1:
-                    - t_s = x^3
-                    - [if any term, t_p, in p has the same degree as t_s] YES, t_p = x^3
-                        - [then, replace t_p with the difference of t_p & t_s] t_p = x^3 - x^3 = 0
-                        - [else, insert -t_s (negative of t_s) into p as a new term]
-                - Iteration 1.2.2:
-                    - t_s = x^2
-                    - [if any term, t_p, in p has the same degree as t_s] NO
-                    - [then, replace t_p with the difference of t_p & t_s]
-                    - [else, insert -t_s (negative of t_s) into p as a new term] t_p = 0 + (-x^2) = -x^2
-    - Iteration 2: p = -x^2 + x - 1, q = x + 1, r = x^2
+            - cq = (x + 1) * x^2 = x^3 + x^2
+            - c = x^3 + x - 1 - (x^3 + x^2) = -x^2 + x - 1
+    - Iteration 2: c = -x^2 + x - 1, q = x + 1, r = x^2
         - t_ph = -x^2, t_qh = x
         - [while highest degree term, t_ph, in p is >= highest degree term, t_qh, in q] YES, 2 >= 1
             - t_quotient = (-x^2 / x) = -x
             - [insert t_quotient into r as a new term] r = x^2 - x
-            - s = 0
-            - foreach term, t_q, in q:
-                - Iteration 2.1.1:
-                    - t_q = x, t_qr = (x * -x) = -x^2
-                    - [if any term, t_s, in s has the same degree as t_qr] NO
-                        - [then, replace t_s with the sum of t_s & t_qr]
-                        - [else, insert t_qr into s as a new term] s = -x^2
-                - Iteration 2.1.2:
-                    - t_q = 1, t_qr = (1 * -x) = -x
-                    - [if any term, t_s, in s has the same degree as t_qr] NO
-                        - [then, replace t_s with the sum of t_s & t_qr]
-                        - [else, insert t_q into s as a new term] s = -x^2 - x
-            - foreach term, t_s, in s:
-                - Iteration 2.2.1:
-                    - t_s = -x^2
-                    - [if any term, t_p, in p has the same degree as t_s] YES, t_p = -x^2
-                        - [then, replace t_p with the difference of t_p & t_s] t_p= -x^2 - (-x^2) = 0
-                        - [else, insert -t_s (negative of t_s) into p as a new term]
-                - Iteration 2.2.2:
-                    - t_s = -x
-                    - [if any term, t_p, in p has the same degree as t_s] YES, t_p = x
-                        - [then, replace t_p with the difference of t_p & t_s] t_p= x - (-x) = 2x
-                        - [else, insert -t_s (negative of t_s) into p as a new term]
-    - Iteration 3: p = 2x - 1, q = x + 1, r = x^2 - x
+            - cq = (x + 1) * -x = -x^2 + x
+            - c = -x^2 + x - 1 - (-x^2 + x) = 2x - 1
+    - Iteration 3: c = 2x - 1, q = x + 1, r = x^2 - x
         -t_ph = 2x, t_qh = x
         - [while highest degree term, t_ph, in p is >= highest degree term, t_qh, in q] YES, 1 >= 1
             - t_quotient = (2x / x) = 2
             - [insert t_quotient into r as a new term] r = x^2 - x + 2
-            - s = 0
-            - foreach term, t_q, in q:
-                - Iteration 3.1.1:
-                    - t_q = x, t_qr = (x * 2) = 2x
-                    - [if any term, t_s, in s has the degree as t_qr] NO
-                        - [then, replace t_s with the sum of t_s & t_qr]
-                        - [else, insert t_qr into s as a new term] s = 2x
-                - Iteration 3.1.2:
-                    - t_q = 1, t_qr = (1 * 2) = 2
-                    - [if any term, t_s, in s has the degree as t_qr] NO
-                        - [then, replace t_s with the sum of t_s & t_qr]
-                        - [else, insert t_qr into s as a new term] s = 2x + 2
-            - foreach term, t_s, in s:
-                - Iteration 3.2.1:
-                    - t_s = 2x
-                    - [if any term, t_p, in p has the same degree as t_s] YES t_p = 2x
-                        - [then, replace t_s with the difference of t_p & t_s] t_p = 2x - 2x = 0
-                        -[else, insert -t_s (negative of t_s) into p as a new term]
-                - Iteration 3.2.2:
-                    - t_s = 2
-                    - [if any term, t_p, in p has the same degree as t_s] YES t_p = -1
-                        - [then, replace t_s with the difference of t_p & t_s] t_p = -1 - 2 = -3
-                        - [else, insert -t_s (negative of t_s) into p as a new term]
-    - Iteration 4: p = -3, q = x + 1, r = x^2 - x + 2
+            - cq = (x + 1) * 2 = 2x + 2
+            - c = 2x - 1 - (2x + 2) = -3
+    - Iteration 4: c = -3, q = x + 1, r = x^2 - x + 2
         - t_ph = -3, t_qh = x
         - [while highest degree term, t_ph, in p is >= highest degree term, t_qh, in q] NO, 0 !>= 1
     - We are done! r = (x^2 - x + 2)
@@ -171,7 +103,7 @@ r = p / q:
 
 3. Constructor checkReps
    We don't need checkRep at the start of either of the constructors because in the first
-   constructor, RatNum(int n) since denom is set to 1 which satisfies the rep invariant,
+   constructor, RatNum(int n), since denom is set to 1 it satisfies the rep invariant,
    (denom >= 0). The second constructor, RatNum(int n, int d) will set denom to d's positive
    counterpart if d < 0, meaning the rep invariant still holds (denom >= 0). There are also
    no mutator methods in RatNum so instances of RatNum cannot be modified.
@@ -182,14 +114,67 @@ r = p / q:
 ###########################################################################
 
 1. Calls to checkRep in RatTerm
+In my constructor, I added the checkRep() call at the end. Since RatTerm is an immutable class,
+its fields cannot be modified outside of the constructors so we can only need to check that the
+at the end of the constructors to make sure the representation invariant still holds. I added
+arg.checkRep() to the start of the add, mul, and div methods (didn't need to include in sub since
+it calls the add method). Since an instance of a RatTerm is final and cannot be modified,
+checkRep() isn't needed for 'this' instance, but it is needed for the parameter to make sure it
+follows the rep invariant.
 
+2. Weakened Rep Invariant
+   Methods/Constructors to change:
+   a) checkRep() no longer needs to make the second assertion of checking that 'expt' is 0 when
+   'coeff' is 0. This improves efficiency because it is one less assertion to make and makes the
+   code less complicated.
+   b) RatTerm(RatNum c, int e) can be simplified to no longer set 'expt' to 0 if the given
+   RatNum c is equivalent to RatNum.ZERO. This reduces complexity since the value of 'expt' is set
+   to e regardless of what c is equal to.
+   c) add(RatTerm arg) needs to be modified so that another if statement is added checking if both
+   this.isZero() && arg.isZero() and if that is the case, then return RatNum.ZERO. This slightly
+   decreases efficiency since another conditional needs to be checked.
+   d) toSring() needs to add another if statement checking if coeff is equivalent to RatNum.ZERO
+   and if it is, then return "0". This increases complexity of the method since another conditional
+   is created.
+   e) equals(Object obj) can have another conditional if statement checking if this instance of
+   RatTerm and obj's instance of RatTerm are both RatNum.ZER) and return true if that is the case.
+   This slightly decreases efficiency since another conditional needs to be checked.
 
-
+3. Stronger Rep Invariant
+   Methods/Constructors to change:
+   a) checkRep() would need to include a new assertion line:
+      assert (!coeff.equals(RatNum.NaN) || expt == 0).
+      This checks that expt is 0 if coeff is RatNum.NaN. This decreases efficiency because one more
+      assertion is checked.
+   b) RatTerm(RatNum c, int e) needs to modify its if statement to be: if (c.equals(RatNum.ZERO) ||
+      c.equals(RatNum.NaN()) instead of just checking if c is equivalent to RatNum.ZERO). Since
+      another conditional statement is added, the efficiency is slightly decreased.
+   c) equals(Object obj) can remove the if statement checking if both 'this' and 'rt' are NaN
+      since the exponents of any NaN RatTerms will now always be 0. This improves code clarity and
+      efficiency since the case of both being NaN RatTerms is handled within one return statement.
 
 ## Part 3
 ###########################################################################
 
 1. Calls to checkRep in RatPoly
+In each of my constructors, I called checkRep() at the end of the constructor. Since RatPoly is an
+immutable class and its fields cannot be modified outside of the constructor, the rep invariant
+only needs to be checked if it holds at the end. I called checkRep() on the RatPoly object 'p'
+in add, mul, and div methods (sub(RatPoly p) method calls add so doesn't need checkRep()). I added
+these checkReps on the RatPoly object in the parameters at the start of each of these methods to
+assure that the RatPoly object given follows the rep invariant. Since 'this' instance of RatPoly
+cannot be modified outside of the constructors I didn't call checkRep() on 'this' instance.
+I also called r.checkRep() at the end of my div(RatPoly p) method since that is the returned
+RatPoly and this assures that RatPoly object 'r' abides by the representation invariant.
+
+2. One of the disadvantages of using this implementation is that for methods such as add, mul,
+sub, and div, we now have to perform those operations for both the exponents and the coefficients
+since they are being tracked separately. This will reduces efficiency and takes up more memory.
+An advantage, however, is implementing scaleCoeff and negate will be easier since we only have to
+loop through the coeff list. Alogn with this, we no longer have an extra class (RatTerm) which
+reduces memory used. I believe that our current implementation is still better than this one because
+in terms of clarity it is much easier to understand and in terms of efficiency it is faster since
+everything is stored in one list rather than having separate lists, in turn increasing memory used.
 
 
 
