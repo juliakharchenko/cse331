@@ -8,10 +8,13 @@ a. Write an AF and RI for IntQueue1 and IntQueue2.
     ### IntQueue1
 
     Abstraction Function:
-
+    AF(this): Queue<Integer> q such that
+              q = entries = [] if entries is empty
+              q = entries = [e0, e1, ... , e(i-1)] where i = size
 
 
     Representation Invariant:
+    entries != null && entries[i] != null where 0 <= i < entries.size()
 
 
 
@@ -19,16 +22,24 @@ a. Write an AF and RI for IntQueue1 and IntQueue2.
     ### IntQueue2
 
     Abstraction Function:
-
+    AF(this): Queue<Integer> q such that
+              entries = [e0, e1, ... , e(i-1)] where i = number of elements in entries
+              front = k (index of first element in entries), size = n
+              q = entries = [] if size = 0
+              q = [e(k), ... , e(k+n-1)] if (front + size) <= entries.length
+              q = [e(k), ... , e(i-1), e0, ..., e(n-(i-k)-1)] if (front + size) > entries.length
 
 
     Representation Invariant:
-
+    entries != null & 0 <= front <= entries.length - 1 & size >= 0
 
 
 
 b. Group the snapshots of IntQueue2's internal state into groups that have the same abstract state.
-
+   Group 1: q(a) = [1,2], q(d) = [1,2], q(g) = [1,2]
+   Group 2: q(b) = [2,3,4], q(h) = [2,3,4]
+   Group 3: q(c) = [1,2,3], q(f) = [1,2,3]
+   Group 4: q(e) = [1,2,3,4]
 
 
 
@@ -36,27 +47,37 @@ c. For each signature below, state and justify in 1-2 sentences (per part) wheth
 could possibly expose the representation, given the information available. Explain any assumptions you made.
 
     1. `public int solveEquations(int x, int y, int z)`
-
+        There is no representation exposure here since the method returns a new integer
+        representing the solved equation given x, y, z. The client cannot modify or interact
+        with x, y, and z in anyway.
 
 
     2. `public String[] decode(boolean slowly)`
-
+        Since an array is a mutable type, it is possible rep exposure could occur if the String
+        array that is returned is a reference to a private field within the class. If a new array
+        is returned, then representation exposure does not occur.
 
 
     3. `private Date myBirthday()`
-
+        Assuming that Date is mutable, it is possible rep exposure could occur if the Data object
+        that is returned is a reference to 'this' Date object in the class. If a new Date object
+        is returned, then representation exposure does not occur.
 
 
     4. `public String toString()`
-
+        Since String is an immutable type, there is no representation exposure.
 
 
     5. `public Iterator<Integer> elements()`
-
+        This method contains representation exposure if the Iterator returned
+        is a reference to a mutable collection.
 
 
     6. `public Deck(List<Card> cards)`
-
+        This method can have representation exposure if a copy of
+        'cards' is not created to construct Deck. If the list of cards
+        is not copied, the client can mutate cards within the list since
+        List is a mutable data type.
 
 
 
