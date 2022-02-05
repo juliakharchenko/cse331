@@ -1,0 +1,13 @@
+# Tests if multiple nodes can be added to the graph
+
+# Create a graph
+created graph multiNodeGraph
+
+# Add nodes
+added node b to multiNodeGraph
+added node a to multiNodeGraph
+
+# Print the nodes in the graph and the outgoing edges from a and b
+multiNodeGraph contains: a b
+the children of a in multiNodeGraph are:
+the children of b in multiNodeGraph are:

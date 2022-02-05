@@ -89,7 +89,17 @@ interface to a graph. If your design includes multiple classes or interfaces, ex
 included each one; if not, explain whether you considered additional classes and why you decided
 not to include them.
 
-
+My implementation of a directed, labeled graph was split into three classes: a Node class, an Edge
+class, and a DLGraph class. My Node class simply holds a piece of data in the form of a String
+while my Edge class holds the label name of the edge and the child node the edge is pointing to.
+My DlGraph class will be implemented through a HashMap with the keys being the nodes (parent) and
+the value being a HashSet of edges for that given node. In my DLGraph class, aside from the basic
+mutator methods such as adding a node, adding an edge, removing a node, removing an edge, and
+clearing the graph, this class contains various observer methods that I included so that I can use
+them to create my mutator methods as well as for general information the client might want to know
+about the graph. I feel like these three classes and my methods are sufficient for the interface to
+a graph since a client will be able to perform all the basic mutators that define the functions of
+a graph and will allow for accessibility of certain information that may be of use to the client.
 
 
 ## Part 3
@@ -97,6 +107,16 @@ not to include them.
 
 What was your testing strategy for this assignment? How do your script tests and JUnit tests
 differ from each other (if they do), and why?
-
+My testing strategy for this assignment was to write my script tests first to test the overall
+functionality of the graph while the JUnit tests are tests more specific to certain methods.
+I began by listing out what functions the graph should have such as creating an empty graph,
+creating a graph with one node and one edge pointing back to that node, creating a graph
+with multiple nodes and multiple edges coming from the same parent node, having multiple
+edges for the same parent node to child node, and others as well. After I determined this, I
+was able to write my script tests to test purely functionality. My JUnit tests are more specific
+in testing the functionality of individual methods such as testing my isEmpty() method in my
+DLGraph class both if the graph being tested is empty and is not empty. My JUnit tests are more
+focused on testing edge cases and values that could cause my code to malfunction or highlight a bug
+while script tests make sure the graph as a whole properly functions.
 
 

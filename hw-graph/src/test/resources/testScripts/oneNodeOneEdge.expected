@@ -1,0 +1,14 @@
+# Tests that a reflexive edge can be added
+
+# Create a graph
+created graph reflexiveGraph
+
+# Add a Node
+added node n1 to reflexiveGraph
+
+# Add an Edge
+added edge e1 from n1 to n1 in reflexiveGraph
+
+# Print the nodes in the graph and the outgoing edges from n1
+reflexiveGraph contains: n1
+the children of n1 in reflexiveGraph are: n1(e1)

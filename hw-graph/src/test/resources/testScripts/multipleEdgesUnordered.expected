@@ -1,0 +1,19 @@
+# Tests if edges are printed in alphabetical order
+
+# Create a graph
+created graph multiEdgeGraph
+
+# Add nodes
+added node a to multiEdgeGraph
+added node b to multiEdgeGraph
+
+# Add edges
+added edge AB2 from a to b in multiEdgeGraph
+added edge AB1 from a to b in multiEdgeGraph
+added edge BA2 from b to a in multiEdgeGraph
+added edge BA1 from b to a in multiEdgeGraph
+
+# Prints the nodes in the graph and the outgoing edges from a and b
+multiEdgeGraph contains: a b
+the children of a in multiEdgeGraph are: b(AB1) b(AB2)
+the children of b in multiEdgeGraph are: a(BA1) a(BA2)

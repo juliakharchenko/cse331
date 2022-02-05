@@ -1,0 +1,11 @@
+# Tests if a node can be added to the graph
+
+# Create a graph
+created graph oneNodeGraph
+
+# Add a Node
+added node n1 to oneNodeGraph
+
+# Print nodes in graph and the outgoing edges from n1
+oneNodeGraph contains: 1
+the children of n1 in oneNodeGraph are:

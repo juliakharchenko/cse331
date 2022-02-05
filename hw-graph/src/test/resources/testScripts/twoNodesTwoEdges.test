@@ -1,0 +1,18 @@
+# Tests if two nodes in a graph can have an edge pointing from node 1 to node 2 and
+# an edge pointing from node 2 to node 1
+
+# Create a graph
+CreateGraph twoNodeGraph
+
+# Add nodes
+AddNode twoNodeGraph a
+AddNode twoNodeGraph b
+
+# Add edges
+AddEdge twoNodeGraph a b AB
+AddEdge twoNodeGraph b a BA
+
+# Print the nodes in the graph and the outgoing edges from a and b
+ListNodes twoNodeGraph
+ListChildren twoNodeGraph a
+ListChildren twoNodeGraph b

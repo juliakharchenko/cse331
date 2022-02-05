@@ -1,0 +1,19 @@
+# Tests if nodes can have multiple edges pointing to the same child node
+
+# Create a graph
+CreateGraph multiEdgeGraph
+
+# Add nodes
+AddNode multiEdgeGraph a
+AddNode multiEdgeGraph b
+
+# Add edges
+AddEdge multiEdgeGraph a b AB1
+AddEdge multiEdgeGraph a b AB2
+AddEdge multiEdgeGraph b a BA1
+AddEdge multiEdgeGraph b a BA2
+
+# Prints the nodes in the graph and the outgoing edges from a and b
+ListNodes multiEdgeGraph
+ListChildren multiEdgeGraph a
+ListChildren multiEdgeGraph b

@@ -1,0 +1,13 @@
+# Tests that nodes are printed in alphabetical order
+
+# Create a graph
+CreateGraph multiNodeGraph
+
+# Add nodes
+AddNode multiNodeGraph b
+AddNode multiNodeGraph a
+
+# Print the nodes in the graph in alphabetical order and the outgoing edges from a and b
+ListNode multiNodeGraph
+ListChildren multiNodeGraph a
+ListChildren multiNodeGraph b
