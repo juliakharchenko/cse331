@@ -108,7 +108,7 @@ public class Edge {
      * target = A is "A(Hi)".
      *
      * @return a String representation of the data stored in this in the form
-     * "{target}({label})}".
+     * "{target}({label})".
      */
     @Override
     public String toString() {
