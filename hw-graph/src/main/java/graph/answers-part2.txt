@@ -17,6 +17,23 @@ A few examples of possible Graph representations:
 representations listed above (for example, in terms of runtime complexity, space
 complexity, or ease of implementation).
 
+A - An advantage of this representation is that it is easier to access the full collection of nodes
+    (like the getALlNodes() method) and the full collection of edges. This means getting information
+    about the graph is easier in terms of implementation. A disadvantage of this representation is
+    that two collections are being stored rather than one. This means a change to one collection must
+    result in an update in the other collection as well which is less efficient, requiring more time.
+
+B - An advantage of this representation is that there is a direct association with a node and its
+    corresponding edges. This means it is more efficient to manipulate the list of edges for each
+    node and adding nodes and edges to the adjacency list. A disadvantage is that it is difficult
+    to determine a relation between a two nodes (a.k.a whether or not a node is a child node of
+    another node) since to get to the child nodes of each node you have to look at their edges first.
+
+C - An advantage of this representation is that it is very efficient to determine the relation
+    between two nodes (whether or not they have an edge between them). A disadvantage of this
+    representation is that it takes up more memory than the other representations. It is hard
+    to also determine all the children nodes of any given node because the matrix stores
+    individual relations between two nodes rather than one parent node and all its children.
 
 
 
@@ -24,7 +41,10 @@ complexity, or ease of implementation).
 chose it. If you chose to use a different representation than one of the three we described
 above, be sure to list its advantages and disadvantages, too.
 
-
+I decided to choose the second representation (B), the adjacency list, by using a HashMap
+with the parent nodes as keys and the set of edges connecting them to child nodes as the values.
+I chose this implementation because it stores everything one collection, allows for efficient
+retrieval of parent nodes and all corresponding edges.
 
 
 ## Part 4
@@ -34,12 +54,20 @@ above, be sure to list its advantages and disadvantages, too.
 
 1. Describe any new tests you added and why you added them, or why you feel that your original
 tests alone are sufficient.
-
+I added a couple more test cases for testing the implementation of the addEdge method. These tests
+test simply test that the proper IllegalArgumentException is thrown when trying to add an edge
+with either a parent node not in the graph or the child node not in the graph. I also added tests
+to test getAllEdges, getAllChildren, and numEdges all throw IllegalArgumentExceptions if their
+parameters are not contained within the graph.
 
 
 
 2. Did you make any changes to your specifications as you were implementing your Graph? (yes/no)
 If yes, describe your changes and why you made them.
-
+The changes I made to my specifications were very minimal. Instead of having the nodes and edges
+in parameters for methods addEdge, getAllEdges, getAllChildren, and numEdges be required to be
+contained in the graph, I changed my specifications so that I throw IllegalArgumentExceptions when
+this is the case since it means the client is asked of less and there is a specific result (throwing
+an exception) given to the client in the case of nodes or edges not being present in the graph.
 
 

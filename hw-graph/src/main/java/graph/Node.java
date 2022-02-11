@@ -9,35 +9,48 @@ package graph;
  * Abstract Invariant:
  *  A node's data stored are never be null.
  */
-public class Node{
+public class Node implements Comparable<Node> {
+
+    /**
+     * Holds the data of the Node.
+     */
+    private final String data;
+
+    // Abstraction Function (this):
+    // Node, n, represents some data of type String
+    // where n.data == this.data.
+
+    // Representation Invariant for every Node n:
+    // data stored within  Node n is never null
 
     /**
      * Constructs a new Node with the given String representing the Node
      *
      * @param data the String this node represents
      * @spec.requires data != null
-     * @spec.modifes this
+     * @spec.modifies this
      * @spec.effects Constructs a new Node equal to "data".
      */
     public Node(String data) {
-        throw new RuntimeException("Method is yet to be implemented.");
+        this.data = data;
+        checkRep();
     }
 
     /**
      * Throws an exception if the representation invariant is violated.
      */
     private void checkRep() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        assert (this.data != null);
     }
 
     /**
      * Returns the String stored within "data" of this Node
+     * @spec.requires this != null
      *
      * @return the String representing this Node
-     * @spec.requires this != null
      */
     public String getData() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        return this.data;
     }
 
     /**
@@ -49,7 +62,10 @@ public class Node{
      */
     @Override
     public boolean equals(Object obj) {
-        throw new RuntimeException("Method is yet to be implemented.");
+        if (this == obj) return true;
+        if (!(obj instanceof Node)) return false;
+        Node n = (Node) obj;
+        return this.data.equals(n.data);
     }
 
     /**
@@ -59,18 +75,31 @@ public class Node{
      */
     @Override
     public int hashCode() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        return data.hashCode();
     }
 
     /**
      * Returns a string representation of this Node. A valid example output with data = "Hello World"
-     * is "Node: Hello World".
+     * is "Hello World".
      *
-     * @return a String representation of the data stored in this in the form "Node: {data}"
+     * @return a String representation of the data stored in this in the form "{data}"
      */
     @Override
     public String toString() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        return this.data;
     }
 
+    /**
+     * Compares this node to another object of type Node
+     *
+     * @param other the other Node object in comparison
+     * @return positive integer if this > other,
+     *         negative integer if other > this,
+     *         0 if this == other
+     */
+    @Override
+    public int compareTo(Node other) {
+        other.checkRep();
+        return this.data.compareTo(other.data);
+    }
 }

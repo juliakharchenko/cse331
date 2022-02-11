@@ -8,6 +8,6 @@ AddNode multiNodeGraph a
 AddNode multiNodeGraph b
 
 # Print the nodes in the graph and the outgoing edges from a and b
-ListNode multiNodeGraph
+ListNodes multiNodeGraph
 ListChildren multiNodeGraph a
 ListChildren multiNodeGraph b

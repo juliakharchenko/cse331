@@ -15,6 +15,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.*;
+import graph.*;
 
 /**
  * This class implements a testing driver which reads test scripts
@@ -29,8 +31,7 @@ public class GraphTestDriver {
     /**
      * String -> Graph: maps the names of graphs to the actual graph
      **/
-    // TODO for the student: Uncomment and parameterize the next line correctly:
-    //private final Map<String, _______> graphs = new HashMap<String, ________>();
+    private final Map<String, DLGraph> graphs = new HashMap<String, DLGraph>();
     private final PrintWriter output;
     private final BufferedReader input;
 
@@ -115,10 +116,8 @@ public class GraphTestDriver {
     }
 
     private void createGraph(String graphName) {
-        // TODO Insert your code here.
-
-        // graphs.put(graphName, ___);
-        // output.println(...);
+        graphs.put(graphName, new DLGraph());
+        output.println("created graph " + graphName);
     }
 
     private void addNode(List<String> arguments) {
@@ -133,10 +132,9 @@ public class GraphTestDriver {
     }
 
     private void addNode(String graphName, String nodeName) {
-        // TODO Insert your code here.
-
-        // ___ = graphs.get(graphName);
-        // output.println(...);
+        DLGraph g = graphs.get(graphName);
+        g.addNode(new Node(nodeName));
+        output.println("added node " + nodeName + " to " + graphName);
     }
 
     private void addEdge(List<String> arguments) {
@@ -154,10 +152,10 @@ public class GraphTestDriver {
 
     private void addEdge(String graphName, String parentName, String childName,
                          String edgeLabel) {
-        // TODO Insert your code here.
-
-        // ___ = graphs.get(graphName);
-        // output.println(...);
+        DLGraph g = graphs.get(graphName);
+        g.addEdge(new Node(parentName), new Node(childName), edgeLabel);
+        output.println("added edge " + edgeLabel + " from " + parentName + " to "
+                        + childName + " in " + graphName);
     }
 
     private void listNodes(List<String> arguments) {
@@ -170,10 +168,13 @@ public class GraphTestDriver {
     }
 
     private void listNodes(String graphName) {
-        // TODO Insert your code here.
+        DLGraph g = graphs.get(graphName);
+        String nodeList = graphName + " contains:";
+        List<Node> sortedNodes = new ArrayList<>(g.getAllNodes());
+        Collections.sort(sortedNodes);
+        for (Node n: sortedNodes) nodeList += " " + n;
+        output.println(nodeList);
 
-        // ___ = graphs.get(graphName);
-        // output.println(...);
     }
 
     private void listChildren(List<String> arguments) {
@@ -186,13 +187,39 @@ public class GraphTestDriver {
         listChildren(graphName, parentName);
     }
 
-    private void listChildren(String graphName, String parentName) {
-        // TODO Insert your code here.
 
-        // ___ = graphs.get(graphName);
-        // output.println(...);
+
+    private void listChildren(String graphName, String parentName) {
+        DLGraph g = graphs.get(graphName);
+        List<Edge> edges = new ArrayList<>(g.getAllEdges(new Node(parentName)));
+        edges.sort(new EdgeComparator());
+        output.print("the children of " + parentName + " in " + graphName + " are:");
+        for (Edge e: edges) output.print(" " + e.getChild() + "(" + e.getLabel() + ")");
+        output.println();
     }
 
+    /**
+     * Implements a Comparator to compare two edges
+     */
+    private static class EdgeComparator implements Comparator<Edge> {
+        /**
+         * Compares two edges where child nodes are compared first, followed by edge label names
+         * (if the child nodes are the same).
+         * @param e1 First edge looked at
+         * @param e2 Second edge looked at
+         * @return a negative integer if first edge is alphabetically less than second edge,
+         * a positive integer if first edge is alphabetically greater than second edge,
+         * 0 if first edge is alphabetically equivalent to second edge.
+         * @throws IllegalArgumentException if either of given edges are null
+         */
+        public int compare(Edge e1, Edge e2) {
+            if (e1 == null || e2 == null) throw new IllegalArgumentException();
+            if (e1.getChild().compareTo(e2.getChild()) != 0) {
+                return e1.getChild().compareTo(e2.getChild());
+            }
+            return e1.getLabel().compareTo(e2.getLabel());
+        }
+    }
     /**
      * This exception results when the input file cannot be parsed properly
      **/

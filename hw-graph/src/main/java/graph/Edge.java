@@ -15,7 +15,25 @@ package graph;
  * Abstract Invariant:
  * The end point of the edge (child node) and the label stored are never null.
  */
-public class Edge{
+public class Edge {
+
+    /**
+     * Holds the label of the edge.
+     */
+    private final String label;
+
+    /**
+     * Holds the target (child) node of the edge.
+     */
+    private final Node target;
+
+    // Abstraction Function (this):
+    // Edge, e, represents a labeled edge that points
+    // to a child Node (target) where this.label = e.label
+    // and this.target = e.label.
+
+    // Representation Invariant for every Edge e:
+    // Edge's label and Edge's target Node are both never null
 
     /**
      *
@@ -27,14 +45,16 @@ public class Edge{
      * equal to "target"
      */
     public Edge(String label, Node target) {
-        throw new RuntimeException("Method is yet to be implemented.");
+        this.label = label;
+        this.target = target;
+        checkRep();
     }
 
     /**
      * Throws an exception if the representation invariant is violated.
      */
     public void checkRep() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        assert (this.label != null && this.target != null);
     }
 
 
@@ -45,7 +65,7 @@ public class Edge{
      * @spec.requires this != null
      */
     public Node getChild() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        return this.target;
     }
 
     /**
@@ -55,7 +75,7 @@ public class Edge{
      * @spec.requires this != null
      */
     public String getLabel() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        return this.label;
     }
 
     /**
@@ -67,7 +87,10 @@ public class Edge{
      */
     @Override
     public boolean equals(Object obj) {
-        throw new RuntimeException("Method is yet to be implemented.");
+        if (this == obj) return true;
+        if (!(obj instanceof Edge)) return false;
+        Edge e = (Edge) obj;
+        return this.label.equals(e.label) && this.target.equals(e.target);
     }
 
     /**
@@ -77,7 +100,7 @@ public class Edge{
      */
     @Override
     public int hashCode() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        return this.label.hashCode() + this.target.hashCode();
     }
 
     /**
@@ -85,11 +108,10 @@ public class Edge{
      * target = A is "A(Hi)".
      *
      * @return a String representation of the data stored in this in the form
-     * "Edge: {target}({label})}".
+     * "{target}({label})}".
      */
     @Override
     public String toString() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        return this.target.toString() + "(" + this.label + ")";
     }
-
 }

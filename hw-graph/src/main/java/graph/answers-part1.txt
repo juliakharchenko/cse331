@@ -10,7 +10,7 @@ a. Write an AF and RI for IntQueue1 and IntQueue2.
     Abstraction Function:
     AF(this): Queue<Integer> q such that
               q = entries = [] if entries is empty
-              q = entries = [e0, e1, ... , e(i-1)] where i = size
+              q = entries = [e0, e1, ... , e(i-1)] where i = size and e0 is the first element
 
 
     Representation Invariant:

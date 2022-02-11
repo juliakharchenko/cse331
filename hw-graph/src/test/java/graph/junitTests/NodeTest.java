@@ -52,7 +52,7 @@ public class NodeTest {
      */
     @Test
     public void testToString() {
-        assertEquals("Node: a", a.toString());
-        assertEquals("Node: b", b.toString());
+        assertEquals("a", a.toString());
+        assertEquals("b", b.toString());
     }
 }

@@ -1,4 +1,4 @@
-# Tests if multiple nodes can be added to the graph
+# Tests that nodes are printed in alphabetical order
 
 # Create a graph
 created graph multiNodeGraph
@@ -7,7 +7,7 @@ created graph multiNodeGraph
 added node b to multiNodeGraph
 added node a to multiNodeGraph
 
-# Print the nodes in the graph and the outgoing edges from a and b
+# Print the nodes in the graph in alphabetical order and the outgoing edges from a and b
 multiNodeGraph contains: a b
 the children of a in multiNodeGraph are:
 the children of b in multiNodeGraph are:

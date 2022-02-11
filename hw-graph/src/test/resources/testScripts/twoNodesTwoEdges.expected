@@ -9,8 +9,8 @@ added node a to twoNodeGraph
 added node b to twoNodeGraph
 
 # Add edges
-AddEdge twoNodeGraph a b AB
-AddEdge twoNodeGraph b a BA
+added edge AB from a to b in twoNodeGraph
+added edge BA from b to a in twoNodeGraph
 
 # Print the nodes in the graph and the outgoing edges from a and b
 twoNodeGraph contains: a b

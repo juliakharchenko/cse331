@@ -18,18 +18,50 @@ import java.util.*;
 
 public class DLGraph {
 
+    public static final boolean DEBUG = true;
+    /**
+     * Holds all the Nodes and all the Edges of each Node within the graph in a map.
+     */
+    private Map<Node, Set<Edge>> graph;
+
+    // Abstraction Function (this):
+    // DLGraph, g, represents a map of Nodes with each node having
+    // a set of edges connecting them to other nodes within the graph.
+
+    // Representation Invariant for every graph g:
+    // graph != null
+    // for all Nodes in graph, nodes are never null and there are no duplicate nodes
+    // for all Edges in each Node in graph, no Edges are null, and child must be in graph
+
     /**
      * @spec.effects Constructs a new, empty DLGraph (no Nodes or sets of Edges).
      */
     public DLGraph() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        graph = new HashMap<>();
+        checkRep();
     }
 
     /**
      * Throws an exception if the representation invariant is violated.
      */
     public void checkRep() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        assert(graph != null) : "graph cannot be null";
+        for (Node n: graph.keySet()) assert(n != null) : "nodes cannot be null in graph";
+        if (DEBUG) {
+            for (Node n: graph.keySet()) {
+                assert (graph.get(n) != null) : "graph can't have nodes with null sets of edges";
+                for (Edge e: graph.get(n)) {
+                    assert(e != null) : "graph cannot have null edges";
+                    assert(graph.containsKey(e.getChild())) : "child node must be in graph";
+                    // stores all edges that have been visited (checks for duplicates)
+                    Set<Edge> visited = new HashSet<>();
+                    assert(!visited.contains(e)) : "graph can't have duplicated edges " +
+                            "(same parent, same child, same label)";
+                    visited.add(e);
+                }
+            }
+        }
+
     }
 
     /**
@@ -41,7 +73,11 @@ public class DLGraph {
      * @return true if Node can be added to graph, false otherwise
      */
     public boolean addNode(Node n) {
-        throw new RuntimeException("Method is yet to be implemented.");
+        if (graph.containsKey(n)) return false; // Node n already exists in graph
+        graph.put(n, new HashSet<Edge>());
+        checkRep();
+        return true;
+
     }
 
     /**
@@ -50,40 +86,23 @@ public class DLGraph {
      * @param from the parent Node that the edge is added to in the graph
      * @param target the child Node that the Edge points to
      * @param label the label of the Edge
-     * @spec.requires from != null, target != null, label != null, graph contains from and target
+     * @spec.requires from != null, target != null, label != null
      * @spec.modifies this
      * @spec.effects adds the given Edge to the set of Edges for the parent Node
-     * @return true if Edge can be added to graph, false otherwise
+     * @return true if Edge was added to the graph
+     * @throws IllegalArgumentException if graph does not contain either given node
      */
     public boolean addEdge(Node from, Node target, String label) {
-        throw new RuntimeException("Method is yet to be implemented.");
+        if (!graph.containsKey(from)) {
+            throw new IllegalArgumentException("Parent node is not in graph.");
+        } else if (!graph.containsKey(target))  {
+            throw new IllegalArgumentException("Child node is not in the graph");
+        }
+        graph.get(from).add(new Edge(label, target));
+        checkRep();
+        return true;
     }
 
-    /**
-     * Removes the given Node from the graph
-     *
-     * @param n Node to be removed from the graph
-     * @spec.requires n != null, graph contains n
-     * @spec.modifies this
-     * @spec.effects removes the given Node from graph and all edges pointing to that Node
-     * @return true if Node can be removed from graph, false otherwise
-     */
-    public boolean removeNode(Node n) {
-        throw new RuntimeException("Method is yet to be implemented.");
-    }
-
-    /**
-     * Removes the given Edge from the given Node in the graph
-     *
-     * @param from parent Node of Edge to be removed
-     * @spec.requires from != null, e != null, graph contains from and e
-     * @spec.modifies this
-     * @spec.effects removes the given Edge from the graph
-     * @return true if Edge can be removed from graph, false otherwise
-     */
-    public boolean removeEdge(Node from, Edge e) {
-        throw new RuntimeException("Method is yet to be implemented.");
-    }
 
     /**
      * Checks if the given Node is contained within the graph
@@ -93,7 +112,7 @@ public class DLGraph {
      * @return true if Node is in graph, false otherwise
      */
     public boolean containsNode(Node n) {
-        throw new RuntimeException("Method is yet to be implemented.");
+        return graph.containsKey(n);
     }
 
     /**
@@ -102,29 +121,37 @@ public class DLGraph {
      * @return set of Nodes in graph
      */
     public Set<Node> getAllNodes() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        return new HashSet<Node>(graph.keySet());
     }
 
     /**
      * Returns the set of all the Edges for the given Node within the graph
      *
      * @param n Node to get all the Edges from
-     * @spec.requires n != null, graph contains n
+     * @spec.requires n != null
      * @return set of all Edges for the given Node in the graph
+     * @throws IllegalArgumentException if graph doesn't contain given node
      */
     public Set<Edge> getAllEdges(Node n) {
-        throw new RuntimeException("Method is yet to be implemented.");
+        if (!graph.containsKey(n)) throw new IllegalArgumentException("Given node is not in graph.");
+        return new HashSet<Edge>(graph.get(n));
     }
 
     /**
      * Returns the set of all child Nodes for the given Node within the graph
      *
      * @param n Mode to get all the children Nodes from
-     * @spec.requires n != null, graph contains n
+     * @spec.requires n != null
      * @return set of all children Nodes of the given Node in the graph
+     * @throws IllegalArgumentException if graph doesn't contain given node
      */
     public Set<Node> getAllChildren(Node n) {
-        throw new RuntimeException("Method is yet to be implemented.");
+        if (!graph.containsKey(n)) {
+            throw new IllegalArgumentException("Given node is not in graph.");
+        }
+        Set<Node> children = new HashSet<>();
+        for (Edge e: graph.get(n)) children.add(e.getChild());
+        return children;
     }
 
     /**
@@ -133,7 +160,7 @@ public class DLGraph {
      * @return number of Nodes in this graph
      */
     public int size() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        return graph.size();
     }
 
     /**
@@ -142,11 +169,22 @@ public class DLGraph {
      *
      * @param from parent Node
      * @param target child Node
-     * @spec.requires from != null, target != null, graph contains from and target
+     * @spec.requires from != null, target != null
      * @return number of Edges from 'from' to 'target'
+     * @throws IllegalArgumentException if graph doesn't contain given parent or child node
      */
     public int numEdges(Node from, Node target) {
-        throw new RuntimeException("Method is yet to be implemented.");
+        if (!graph.containsKey(from)) {
+            throw new IllegalArgumentException("Parent node is not in graph.");
+        }
+        if (!graph.containsKey(target)) {
+            throw new IllegalArgumentException("Child node is not in graph.");
+        }
+        int edges = 0;
+        for (Edge e: graph.get(from)) {
+            if (e.getChild().equals(target)) edges++;
+        }
+        return edges;
     }
 
     /**
@@ -155,7 +193,7 @@ public class DLGraph {
      * @return true if this graph has no Nodes, false otherwise
      */
     public boolean isEmpty() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        return graph.isEmpty();
     }
 
     /**
@@ -165,6 +203,7 @@ public class DLGraph {
      * @spec.effects clears all Nodes and Edges within this graph
      */
     public void clearGraph() {
-        throw new RuntimeException("Method is yet to be implemented.");
+        graph.clear();
+        checkRep();
     }
 }

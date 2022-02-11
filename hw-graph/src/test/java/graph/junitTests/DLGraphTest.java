@@ -16,10 +16,15 @@ public class DLGraphTest {
     @Rule
     public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
 
-    private final DLGraph graph1 = new DLGraph();
+    private DLGraph graph1;
     private final Node a = new Node("a");
     private final Node b = new Node("b");
+    private final Node c = new Node("c");
 
+    @Before
+    public void setUp() throws Exception {
+        graph1 = new DLGraph();
+    }
     @Test
     public void testSizeOnConstruction() { assertEquals(0, graph1.size()); }
 
@@ -129,7 +134,48 @@ public class DLGraphTest {
         graph1.addEdge(a, b, "AB1");
         graph1.addEdge(a, b, "AB2");
         graph1.clearGraph();
-        assertEquals(new DLGraph(), graph1);
+        assertTrue(graph1.isEmpty());
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void addEdgeNoParent() {
+        graph1.addNode(a);
+        graph1.addEdge(b, a, "BA1");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addEdgeNoChild() {
+        graph1.addNode(a);
+        graph1.addEdge(a, b, "AB1");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getAllEdgesNoNode() {
+        graph1.addNode(a);
+        graph1.getAllEdges(b);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getAllChildrenNoNode() {
+        graph1.addNode(a);
+        graph1.addNode(c);
+        graph1.addEdge(a, c, "AC1");
+        graph1.getAllChildren(b);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void numEdgesNoParent() {
+        graph1.addNode(a);
+        graph1.addNode(c);
+        graph1.addEdge(a, c, "AC1");
+        graph1.numEdges(b, a);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void numEdgesNoChild() {
+        graph1.addNode(a);
+        graph1.addNode(c);
+        graph1.addEdge(a, c, "AC1");
+        graph1.numEdges(a, b);
+    }
 }
