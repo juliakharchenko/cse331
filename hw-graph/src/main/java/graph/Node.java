@@ -93,8 +93,8 @@ public class Node implements Comparable<Node> {
      * Compares this node to another object of type Node
      *
      * @param other the other Node object in comparison
-     * @return positive integer if this > other,
-     *         negative integer if other > this,
+     * @return positive integer if this is greater than other,
+     *         negative integer if other is greater than this,
      *         0 if this == other
      */
     @Override
