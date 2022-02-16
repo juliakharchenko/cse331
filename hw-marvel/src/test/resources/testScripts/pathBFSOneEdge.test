@@ -1,0 +1,5 @@
+# Tests finding a path with only one edge between two nodes.
+
+LoadGraph nba nbaPlayers.csv
+
+FindPath nba MICHAEL-JORDAN DWYANE-WADE

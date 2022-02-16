@@ -1,0 +1,10 @@
+# Tests finding a path to a node that doesn't exist within the graph
+
+loaded graph nba
+
+unknown: DWIGHT-HOWARD
+
+unknown: SHAQUILLE-ONEAL
+
+unknown: DWIGHT-HOWARD
+unknown: SHAQUILLE-ONEAL

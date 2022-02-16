@@ -1,0 +1,11 @@
+# Test the parser on a mid sized graph of nba players as nodes
+# and multiple edges per node.
+
+LoadGraph nba nbaPlayers.csv
+ListChildren nba LEBRON-JAMES
+ListChildren nba MICHAEL-JORDAN
+ListChildren nba MAGIC-JOHNSON
+ListChildren nba KOBE-BRYANT
+ListChildren nba KAREEM-ABDUL-JABBAR
+ListChildren nba DYWANE-WADE
+ListChildren nba REGGIE-MILLER

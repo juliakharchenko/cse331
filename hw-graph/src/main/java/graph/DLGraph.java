@@ -18,7 +18,7 @@ import java.util.*;
 
 public class DLGraph {
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     /**
      * Holds all the Nodes and all the Edges of each Node within the graph in a map.
      */
@@ -46,8 +46,8 @@ public class DLGraph {
      */
     public void checkRep() {
         assert(graph != null) : "graph cannot be null";
-        for (Node n: graph.keySet()) assert(n != null) : "nodes cannot be null in graph";
         if (DEBUG) {
+            for (Node n: graph.keySet()) assert(n != null) : "nodes cannot be null in graph";
             for (Node n: graph.keySet()) {
                 assert (graph.get(n) != null) : "graph can't have nodes with null sets of edges";
                 for (Edge e: graph.get(n)) {

@@ -1,0 +1,9 @@
+# Tests finding a path to and from a node that doesn't exist within the graph
+
+LoadGraph nba nbaPlayers.csv
+
+FindPath nba KOBE-BRYANT DWIGHT-HOWARD
+
+FindPath nba SHAQUILLE-ONEAL MAGIC-JOHNSON
+
+FindPath nba DWIGHT-HOWARD SHAQUILLE-ONEAL

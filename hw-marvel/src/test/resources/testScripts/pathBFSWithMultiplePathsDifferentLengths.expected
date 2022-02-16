@@ -1,0 +1,10 @@
+# Tests finding the shortest path between two nodes in a graph
+# that have multiple paths of different lengths from the first node
+# to the second node.
+
+loaded graph nba
+
+# Finds shortest path out of all paths from MAGIC-JOHNSON to DWYANE-WADE
+path from MAGIC-JOHNSON to DWYANE-WADE:
+MAGIC-JOHNSON to LEBRON-JAMES via LAKERS
+LEBRON-JAMES to DWYANE-WADE via HEAT

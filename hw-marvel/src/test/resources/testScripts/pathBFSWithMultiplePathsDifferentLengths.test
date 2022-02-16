@@ -1,0 +1,8 @@
+# Tests finding the shortest path between two nodes in a graph
+# that have multiple paths of different lengths from the first node
+# to the second node.
+
+LoadGraph nba nbaPlayers.csv
+
+# Finds shortest path out of all paths from MAGIC-JOHNSON to DWYANE-WADE
+FindPath nba MAGIC-JOHNSON DWYANE-WADE

@@ -1,0 +1,6 @@
+# Tests finding a path with only one edge between two nodes.
+
+loaded graph nba
+
+path from MICHAEL-JORDAN to DWYANE-WADE:
+MICHAEL-JORDAN to DWYANE-WADE via BULLS

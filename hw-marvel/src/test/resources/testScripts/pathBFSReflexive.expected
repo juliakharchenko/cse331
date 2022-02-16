@@ -1,0 +1,5 @@
+# Tests finding a path from a node to itself (reflexive case).
+
+loaded graph nba
+
+path from DWYANE-WADE to DWYANE-WADE:

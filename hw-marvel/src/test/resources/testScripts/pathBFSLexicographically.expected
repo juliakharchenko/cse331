@@ -1,0 +1,7 @@
+# Tests finding a path between two nodes that have multiple edges of same length
+# Shortest path between two nodes is decided by lexicographically least path.
+
+loaded graph nba
+
+path from DWYANE-WADE to LEBRON-JAMES:
+DWYANE-WADE to LEBRON-JAMES via CAVALIERS

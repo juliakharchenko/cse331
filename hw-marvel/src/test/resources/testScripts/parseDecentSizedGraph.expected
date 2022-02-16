@@ -1,0 +1,11 @@
+# Test the parser on a mid sized graph of nba players as nodes
+# and multiple edges per node.
+
+loaded graph nba
+the children of LEBRON-JAMES in nba are: DWYANE-WADE(CAVALIERS) DWYANE-WADE(HEAT) KAREEM-ABDUL-JABBAR(LAKERS) KOBE-BRYANT(LAKERS) MAGIC-JOHNSON(LAKERS)
+the children of MICHAEL-JORDAN in nba are: DWYANE-WADE(BULLS)
+the children of MAGIC-JOHNSON in nba are: KAREEM-ABDUL-JABBAR(LAKERS) KOBE-BRYANT(LAKERS) LEBRON-JAMES(LAKERS)
+the children of KOBE-BRYANT in nba are: KAREEM-ABDUL-JABBAR(LAKERS) LEBRON-JAMES(LAKERS) MAGIC-JOHNSON(LAKERS)
+the children of KAREEM-ABDUL-JABBAR in nba are: KOBE-BRYANT(LAKERS) LEBRON-JAMES(LAKERS) MAGIC-JOHNSON(LAKERS)
+the children of DWYANE-WADE in nba are: LEBRON-JAMES(CAVALIERS) LEBRON-JAMES(HEAT) MICHAEL-JORDAN(BULLS)
+the children of REGGIE-MILLER in nba are:

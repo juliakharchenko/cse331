@@ -1,0 +1,5 @@
+# Tests finding a path from a node to itself (reflexive case).
+
+LoadGraph nba nbaPlayers.csv
+
+FindPath nba DWAYNE-WADE DWYANE-WADE

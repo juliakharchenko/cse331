@@ -1,0 +1,4 @@
+# Test the parser on a graph that is empty
+
+loaded graph emptyGraph
+emptyGraph contains:

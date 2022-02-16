@@ -1,0 +1,6 @@
+# Tests finding a path between two nodes that have multiple edges of same length
+# Shortest path between two nodes is decided by lexicographically least path.
+
+LoadGraph nba nbaPlayers.csv
+
+FindPath nba DWYANE-WADE LEBRON-JAMES

@@ -1,0 +1,5 @@
+# Tests finding a path between two nodes that don't have a path.
+
+LoadGraph nba nbaPlayers.csv
+
+FindPath nba MICHAEL-JORDAN REGGIE-MILLER
