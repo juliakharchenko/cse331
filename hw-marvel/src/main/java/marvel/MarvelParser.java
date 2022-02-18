@@ -21,17 +21,17 @@ import java.util.stream.Collectors;
 public class MarvelParser {
 
     // This is not an ADT
+
     /**
      * Reads the Marvel Universe dataset. Each line of the input file contains a character name and a
      * comic book the character appeared in, separated by a comma character
      *
      * @spec.requires filename is a valid file in the resources/data folder
      * @param filename the file that will be read
-     * @param characters the set that will store the characters within the given file
      * @return a map with each book from the given file as a key and the list of characters
      *         in each book as the corresponding value
      */
-    public static Map<String, List<String>> parseData(String filename, Set<String> characters) {
+    public static Map<String, List<String>> parseData(String filename) {
         List<String> lines = readLines(filename);
 
         Map<String, List<String>> books = new HashMap<>();
@@ -39,9 +39,6 @@ public class MarvelParser {
             String[] split = line.split(",");
             String character = split[0];
             String book = split[1];
-
-            // sets don't allow for duplicates so same character isn't added more than once
-            characters.add(character);
 
             if (!books.containsKey(book)) books.put(book, new ArrayList<>());
 

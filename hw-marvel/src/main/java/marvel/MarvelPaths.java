@@ -63,19 +63,17 @@ public class MarvelPaths {
     public static DLGraph buildGraph(String filename) {
         if (filename == null) throw new IllegalArgumentException("File name cannot be null");
 
-        Set<String> characters = new HashSet<>();
-        Map<String, List<String>> books = MarvelParser.parseData(filename, characters);
+        Map<String, List<String>> books = MarvelParser.parseData(filename);
         DLGraph marvelGraph = new DLGraph();
-
-        // add all characters as nodes in the graph
-        for (String character: characters) marvelGraph.addNode(new Node(character));
 
         for (String book: books.keySet()) {
             List<String> charsInBook = books.get(book);
+            marvelGraph.addNode(new Node(charsInBook.get(0)));
             for (int i = 0; i < charsInBook.size() - 1; i++) {
                 Node parent = new Node(charsInBook.get(i));
                 for (int j = i + 1; j < charsInBook.size(); j++) {
                     Node child = new Node(charsInBook.get(j)); // since list has no duplicates, cannot have reflexive edge
+                    marvelGraph.addNode(child);
                     marvelGraph.addEdge(parent, child, book);
                     marvelGraph.addEdge(child, parent, book);
                 }
