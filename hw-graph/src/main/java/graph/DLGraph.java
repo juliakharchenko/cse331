@@ -18,6 +18,10 @@ import java.util.*;
 
 public class DLGraph {
 
+    /**
+     * Holds the boolean value of whether large tests is checkRep() will be performed
+     * True if long tests will be performed, false otherwose
+     */
     public static final boolean DEBUG = false;
     /**
      * Holds all the Nodes and all the Edges of each Node within the graph in a map.
@@ -31,7 +35,8 @@ public class DLGraph {
     // Representation Invariant for every graph g:
     // graph != null
     // for all Nodes in graph, nodes are never null and there are no duplicate nodes
-    // for all Edges in each Node in graph, no Edges are null, and child must be in graph
+    // for all Edges in each Node in graph, no Edges are null, no two edges are the same
+    // and child node of edge must be in graph
 
     /**
      * @spec.effects Constructs a new, empty DLGraph (no Nodes or sets of Edges).
@@ -70,9 +75,11 @@ public class DLGraph {
      * @param n Node to add to the graph
      * @spec.requires n != null
      * @spec.modifies this
+     * @spec.effects Adds given node to this graph
      * @return true if Node can be added to graph, false otherwise
      */
     public boolean addNode(Node n) {
+        checkRep();
         if (graph.containsKey(n)) return false; // Node n already exists in graph
         graph.put(n, new HashSet<Edge>());
         checkRep();
@@ -93,6 +100,7 @@ public class DLGraph {
      * @throws IllegalArgumentException if graph does not contain either given node
      */
     public boolean addEdge(Node from, Node target, String label) {
+        checkRep();
         if (!graph.containsKey(from)) {
             throw new IllegalArgumentException("Parent node is not in graph.");
         } else if (!graph.containsKey(target))  {
@@ -112,15 +120,17 @@ public class DLGraph {
      * @return true if Node is in graph, false otherwise
      */
     public boolean containsNode(Node n) {
+        checkRep();
         return graph.containsKey(n);
     }
 
     /**
      * Returns a set of all the Nodes within the graph
      *
-     * @return set of Nodes in graph
+     * @return set of Nodes in graph, empty set if no nodes
      */
     public Set<Node> getAllNodes() {
+        checkRep();
         return new HashSet<Node>(graph.keySet());
     }
 
@@ -129,10 +139,11 @@ public class DLGraph {
      *
      * @param n Node to get all the Edges from
      * @spec.requires n != null
-     * @return set of all Edges for the given Node in the graph
+     * @return set of all Edges for the given Node in the graph, empty set if no edges for given node
      * @throws IllegalArgumentException if graph doesn't contain given node
      */
     public Set<Edge> getAllEdges(Node n) {
+        checkRep();
         if (!graph.containsKey(n)) throw new IllegalArgumentException("Given node is not in graph.");
         return new HashSet<Edge>(graph.get(n));
     }
@@ -142,15 +153,17 @@ public class DLGraph {
      *
      * @param n Mode to get all the children Nodes from
      * @spec.requires n != null
-     * @return set of all children Nodes of the given Node in the graph
+     * @return set of all children Nodes of the given Node in the graph, empty set if no children
      * @throws IllegalArgumentException if graph doesn't contain given node
      */
     public Set<Node> getAllChildren(Node n) {
+        checkRep();
         if (!graph.containsKey(n)) {
             throw new IllegalArgumentException("Given node is not in graph.");
         }
         Set<Node> children = new HashSet<>();
         for (Edge e: graph.get(n)) children.add(e.getChild());
+        checkRep();
         return children;
     }
 
@@ -160,6 +173,7 @@ public class DLGraph {
      * @return number of Nodes in this graph
      */
     public int size() {
+        checkRep();
         return graph.size();
     }
 
@@ -174,6 +188,7 @@ public class DLGraph {
      * @throws IllegalArgumentException if graph doesn't contain given parent or child node
      */
     public int numEdges(Node from, Node target) {
+        checkRep();
         if (!graph.containsKey(from)) {
             throw new IllegalArgumentException("Parent node is not in graph.");
         }
@@ -184,6 +199,7 @@ public class DLGraph {
         for (Edge e: graph.get(from)) {
             if (e.getChild().equals(target)) edges++;
         }
+        checkRep();
         return edges;
     }
 
@@ -193,6 +209,7 @@ public class DLGraph {
      * @return true if this graph has no Nodes, false otherwise
      */
     public boolean isEmpty() {
+        checkRep();
         return graph.isEmpty();
     }
 
@@ -203,6 +220,7 @@ public class DLGraph {
      * @spec.effects clears all Nodes and Edges within this graph
      */
     public void clearGraph() {
+        checkRep();
         graph.clear();
         checkRep();
     }

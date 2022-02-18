@@ -1,4 +1,4 @@
-# Tests finding a path to a node that doesn't exist within the graph
+# Tests finding a path to and from a node that doesn't exist within the graph
 
 loaded graph nba
 

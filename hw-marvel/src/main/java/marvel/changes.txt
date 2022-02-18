@@ -1,2 +1,7 @@
 Briefly list any changes you made to your graph class during hw-marvel, and why you made those changes.
 
+Aside from some minor specification changes based on the feedback that I received from hw5-part2, I didn't
+make any changes to my graph class. The specification changes was removing spec.modifies in the constructor,
+adding javadoc comments to global variables, some stronger method header comments, and moving a for loop in
+my checkRep inside the debug if statement to improve run time. Other than this, no actual implementation
+changes were made.

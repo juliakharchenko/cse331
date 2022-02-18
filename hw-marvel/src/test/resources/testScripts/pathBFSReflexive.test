@@ -2,4 +2,4 @@
 
 LoadGraph nba nbaPlayers.csv
 
-FindPath nba DWAYNE-WADE DWYANE-WADE
+FindPath nba DWYANE-WADE DWYANE-WADE

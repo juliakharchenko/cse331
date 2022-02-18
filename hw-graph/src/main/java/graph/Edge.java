@@ -40,7 +40,6 @@ public class Edge {
      * @param label the String the label of this edge represents
      * @param target the destination (child) node of this edge
      * @spec.requires label != null, target != null
-     * @spec.modifies this
      * @spec.effects Constructs a new Edge with {@code label} equal to "label", and {@code target}
      * equal to "target"
      */
@@ -100,7 +99,7 @@ public class Edge {
      */
     @Override
     public int hashCode() {
-        return this.label.hashCode() + this.target.hashCode();
+        return this.label.hashCode() ^ this.target.hashCode();
     }
 
     /**

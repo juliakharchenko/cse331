@@ -5,17 +5,62 @@ import graph.*;
 
 /**
  * This class builds a directed, labeled graph consisting of marvel characters as nodes
- * and edges between nodes representing the comic they are in
+ * and edges between nodes representing the comic they share
  */
 public class MarvelPaths {
+
+    // This is not an ADT
+
+    /**
+     * Allows client to search for the shortest path between two marvel characters
+     * using a BFS algorithm. If there is no path between the two marvel characters,
+     * method tells client that a path doesn't exist.
+     * @param args contains the supplied command-line arguments as an array of Strings
+     */
+    public static void main(String[] args) {
+        DLGraph marvelGraph = MarvelPaths.buildGraph("marvel.csv");
+        Scanner input = new Scanner(System.in);
+        boolean playAgain = true;
+        System.out.println("Welcome to MarvelPaths!");
+        System.out.println("Here you can determine the shortest path between two marvel characters across the comics.");
+        System.out.println("Input characters in all CAPS with a dash between first and last names (Ex: CAPTAIN-AMERICA).");
+        while (playAgain) {
+            System.out.print("Please choose your first character: ");
+            Node char1 = new Node(input.nextLine());
+            System.out.print("Please choose your second character: ");
+            Node char2 = new Node(input.nextLine());
+            if (!(marvelGraph.containsNode(char1) || marvelGraph.containsNode(char2))) {
+                System.out.println("Neither character is a valid marvel character");
+            } else if (!marvelGraph.containsNode(char1)) {
+                System.out.println("First character is not a valid marvel character");
+            } else if (!marvelGraph.containsNode(char2)) {
+                System.out.println("Second character is not a valid marvel character");
+            } else {
+                System.out.println("path from " + char1.getData() + " to " + char2.getData() + ":");
+                List<Edge> bfs = MarvelPaths.shortestPath(marvelGraph, char1.getData(), char2.getData());
+                if (bfs == null) System.out.println("no path found");
+                else {
+                    String parent = char1.getData();
+                    for (Edge e: bfs) {
+                        System.out.println(parent + " to " + e.getChild().getData() + " via " + e.getLabel());
+                        parent = e.getChild().getData();
+                    }
+                }
+            }
+            System.out.println("\nWould you like to play again (yes/no)?");
+            String response = input.nextLine();
+            if (!response.toLowerCase().equals("yes")) playAgain = false;
+        }
+        input.close();
+    }
 
     /**
      * Constructs a directed, label graph based on the information in the file.
      * @param filename the file that the graph is being created from
      * @return DLGraph constructed from given file, empty graph if file is empty
-     * @throws IllegalArgumentException if filename = null
+     * @throws IllegalArgumentException if filename is null
      */
-    public DLGraph buildGraph(String filename) {
+    public static DLGraph buildGraph(String filename) {
         if (filename == null) throw new IllegalArgumentException("File name cannot be null");
 
         Set<String> characters = new HashSet<>();
@@ -25,8 +70,8 @@ public class MarvelPaths {
         // add all characters as nodes in the graph
         for (String character: characters) marvelGraph.addNode(new Node(character));
 
-        for (String book: books.keySet()) { // for every book that there is
-            List<String> charsInBook = books.get(book); // get list of characters in that book
+        for (String book: books.keySet()) {
+            List<String> charsInBook = books.get(book);
             for (int i = 0; i < charsInBook.size() - 1; i++) {
                 Node parent = new Node(charsInBook.get(i));
                 for (int j = i + 1; j < charsInBook.size(); j++) {
@@ -41,19 +86,22 @@ public class MarvelPaths {
 
     /**
      * Finds the shortest path between two nodes using a Breadth-First-Search(BFS) algorithm
-     * @param g the graph looked at to find path between two given nodes
-     * @param start the starting node
-     * @param destination the destination node
-     * @return list of edges containing the shortest path between the start and destination node,
-     *         empty list if there is no path between two given nodes
-     * @throws IllegalArgumentException if either given nodes are null or do not exist in the graph
+     * @param g the graph looked at to find path between two given characters
+     * @param char1 the starting character
+     * @param char2 the destination character
+     * @return list of edges containing the shortest path between the start and destination characters,
+     *         null if there is no path between two given characters
+     * @throws IllegalArgumentException if either given characters are null or do not exist in the graph
      *                                  or if the graph is null
      */
-    public List<Edge> shortestPath(DLGraph g, Node start, Node destination) {
+    public static List<Edge> shortestPath(DLGraph g, String char1, String char2) {
         if (g == null) throw new IllegalArgumentException("Graph cannot be null.");
-        else if (start == null || destination == null) {
-            throw new IllegalArgumentException("Cannot give null nodes.");
-        } else if (!(g.containsNode(start) && g.containsNode(destination))) {
+        if (char1 == null || char2 == null) {
+            throw new IllegalArgumentException("Cannot give null characters.");
+        }
+        Node start = new Node(char1);
+        Node destination = new Node(char2);
+        if (!(g.containsNode(start) && g.containsNode(destination))) {
             throw new IllegalArgumentException("Graph must contain start and destination nodes.");
         }
 
@@ -67,7 +115,7 @@ public class MarvelPaths {
             Node parent = workList.remove();
             if (parent.equals(destination)) return new ArrayList<>(path.get(parent));
 
-            List<Edge> sortedEdges = new ArrayList<Edge>(g.getAllEdges(parent));
+            List<Edge> sortedEdges = new ArrayList<>(g.getAllEdges(parent));
             sortedEdges.sort(new EdgeComparator());
 
             for (Edge e: sortedEdges) {
@@ -99,8 +147,8 @@ public class MarvelPaths {
          */
         public int compare(Edge e1, Edge e2) {
             if (e1 == null || e2 == null) throw new IllegalArgumentException();
-            if (e1.getChild().compareTo(e2.getChild()) != 0) {
-                return e1.getChild().compareTo(e2.getChild());
+            if (!e1.getChild().equals(e2.getChild())) {
+                return e1.getChild().getData().compareTo(e2.getChild().getData());
             }
             return e1.getLabel().compareTo(e2.getLabel());
         }

@@ -6,3 +6,6 @@ LoadGraph nba nbaPlayers.csv
 
 # Finds shortest path out of all paths from MAGIC-JOHNSON to DWYANE-WADE
 FindPath nba MAGIC-JOHNSON DWYANE-WADE
+
+# Finds shortest path out of all paths from KAREEM-ABDUL-JABBAR to MICHAEL-JORDAN
+FindPath nba KAREEM-ABDUL-JABBAR MICHAEL-JORDAN

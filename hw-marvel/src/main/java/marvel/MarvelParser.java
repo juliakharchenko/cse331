@@ -13,34 +13,36 @@ package marvel;
 
 import java.io.*;
 import java.util.*;
-import java.util.List; // remove
-import java.util.stream.Collectors; // remove
+import java.util.stream.Collectors;
 
 /**
  * Parser utility to load the Marvel Comics dataset.
  */
 public class MarvelParser {
 
+    // This is not an ADT
     /**
      * Reads the Marvel Universe dataset. Each line of the input file contains a character name and a
      * comic book the character appeared in, separated by a comma character
      *
      * @spec.requires filename is a valid file in the resources/data folder
      * @param filename the file that will be read
-     * @param characters the set of characters within the file
+     * @param characters the set that will store the characters within the given file
+     * @return a map with each book from the given file as a key and the list of characters
+     *         in each book as the corresponding value
      */
     public static Map<String, List<String>> parseData(String filename, Set<String> characters) {
         List<String> lines = readLines(filename);
 
-        // You'll need to:
-        //  - Split each line into its individual parts
-        //  - Collect the data into some convenient data structure(s) to return to the graph building code
         Map<String, List<String>> books = new HashMap<>();
         for (String line: lines) {
             String[] split = line.split(",");
             String character = split[0];
             String book = split[1];
-            characters.add(character); // set doesn't allow for duplicates
+
+            // sets don't allow for duplicates so same character isn't added more than once
+            characters.add(character);
+
             if (!books.containsKey(book)) books.put(book, new ArrayList<>());
 
             // doesn't allow for duplicates in character list for each book

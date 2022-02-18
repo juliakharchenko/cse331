@@ -28,7 +28,6 @@ public class Node implements Comparable<Node> {
      *
      * @param data the String this node represents
      * @spec.requires data != null
-     * @spec.modifies this
      * @spec.effects Constructs a new Node equal to "data".
      */
     public Node(String data) {
@@ -93,8 +92,8 @@ public class Node implements Comparable<Node> {
      * Compares this node to another object of type Node
      *
      * @param other the other Node object in comparison
-     * @return positive integer if this is greater than other,
-     *         negative integer if other is greater than this,
+     * @return positive integer if data of this is lexicographically greater than data of other
+     *         negative integer if data of this is lexicographically less than data of other
      *         0 if this == other
      */
     @Override

@@ -59,7 +59,7 @@ public class EdgeTest {
 
     @Test
     public void testHashCode() {
-        assertEquals("AB1".hashCode() + "b".hashCode(), AB1.hashCode());
+        assertEquals("AB1".hashCode() ^ "b".hashCode(), AB1.hashCode());
     }
 
     @Test
