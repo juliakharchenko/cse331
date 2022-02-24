@@ -15,7 +15,7 @@ public class MarvelPathsTest {
     @Rule
     public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
 
-    private DLGraph testGraph;
+    private DLGraph<String,String> testGraph;
 
     @Before
     public void setUp() throws Exception {

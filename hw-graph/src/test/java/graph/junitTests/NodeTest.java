@@ -15,9 +15,9 @@ public class NodeTest {
     @Rule
     public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
 
-    private final Node a = new Node("a");
-    private final Node b = new Node("b");
-    private final Node a2 = new Node("a");
+    private final Node<String> a = new Node<>("a");
+    private final Node<String> b = new Node<>("b");
+    private final Node<String> a2 = new Node<>("a");
 
     /**
      * Tests if data within node can be accessed.
@@ -44,15 +44,5 @@ public class NodeTest {
     public void testHashCode() {
         assertTrue(a.hashCode() == a2.hashCode());
         assertFalse(a.hashCode() == b.hashCode());
-    }
-
-    /**
-     * Tests that the string representation of a Node is in the form
-     * "Node: {data}".
-     */
-    @Test
-    public void testToString() {
-        assertEquals("a", a.toString());
-        assertEquals("b", b.toString());
     }
 }

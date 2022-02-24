@@ -18,7 +18,7 @@ public class MarvelPaths {
      * @param args contains the supplied command-line arguments as an array of Strings
      */
     public static void main(String[] args) {
-        DLGraph marvelGraph = MarvelPaths.buildGraph("marvel.csv");
+        DLGraph<String,String> marvelGraph = MarvelPaths.buildGraph("marvel.csv");
         Scanner input = new Scanner(System.in);
         boolean playAgain = true;
         System.out.println("Welcome to MarvelPaths!");
@@ -26,9 +26,9 @@ public class MarvelPaths {
         System.out.println("Input characters in all CAPS with a dash between first and last names (Ex: CAPTAIN-AMERICA).");
         while (playAgain) {
             System.out.print("Please choose your first character: ");
-            Node char1 = new Node(input.nextLine());
+            Node<String> char1 = new Node<>(input.nextLine());
             System.out.print("Please choose your second character: ");
-            Node char2 = new Node(input.nextLine());
+            Node<String> char2 = new Node<>(input.nextLine());
             if (!(marvelGraph.containsNode(char1) || marvelGraph.containsNode(char2))) {
                 System.out.println("Neither character is a valid marvel character");
             } else if (!marvelGraph.containsNode(char1)) {
@@ -37,11 +37,11 @@ public class MarvelPaths {
                 System.out.println("Second character is not a valid marvel character");
             } else {
                 System.out.println("path from " + char1.getData() + " to " + char2.getData() + ":");
-                List<Edge> bfs = MarvelPaths.shortestPath(marvelGraph, char1.getData(), char2.getData());
+                List<Edge<String,String>> bfs = MarvelPaths.shortestPath(marvelGraph, char1.getData(), char2.getData());
                 if (bfs == null) System.out.println("no path found");
                 else {
                     String parent = char1.getData();
-                    for (Edge e: bfs) {
+                    for (Edge<String,String> e: bfs) {
                         System.out.println(parent + " to " + e.getChild().getData() + " via " + e.getLabel());
                         parent = e.getChild().getData();
                     }
@@ -60,19 +60,19 @@ public class MarvelPaths {
      * @return DLGraph constructed from given file, empty graph if file is empty
      * @throws IllegalArgumentException if filename is null
      */
-    public static DLGraph buildGraph(String filename) {
+    public static DLGraph<String,String> buildGraph(String filename) {
         if (filename == null) throw new IllegalArgumentException("File name cannot be null");
 
         Map<String, List<String>> books = MarvelParser.parseData(filename);
-        DLGraph marvelGraph = new DLGraph();
+        DLGraph<String,String> marvelGraph = new DLGraph<>();
 
         for (String book: books.keySet()) {
             List<String> charsInBook = books.get(book);
-            marvelGraph.addNode(new Node(charsInBook.get(0)));
+            marvelGraph.addNode(new Node<>(charsInBook.get(0)));
             for (int i = 0; i < charsInBook.size() - 1; i++) {
-                Node parent = new Node(charsInBook.get(i));
+                Node<String> parent = new Node<>(charsInBook.get(i));
                 for (int j = i + 1; j < charsInBook.size(); j++) {
-                    Node child = new Node(charsInBook.get(j)); // since list has no duplicates, cannot have reflexive edge
+                    Node<String> child = new Node<>(charsInBook.get(j)); // since list has no duplicates, cannot have reflexive edge
                     marvelGraph.addNode(child);
                     marvelGraph.addEdge(parent, child, book);
                     marvelGraph.addEdge(child, parent, book);
@@ -92,34 +92,34 @@ public class MarvelPaths {
      * @throws IllegalArgumentException if either given characters are null or do not exist in the graph
      *                                  or if the graph is null
      */
-    public static List<Edge> shortestPath(DLGraph g, String char1, String char2) {
+    public static List<Edge<String,String>> shortestPath(DLGraph<String,String> g, String char1, String char2) {
         if (g == null) throw new IllegalArgumentException("Graph cannot be null.");
         if (char1 == null || char2 == null) {
             throw new IllegalArgumentException("Cannot give null characters.");
         }
-        Node start = new Node(char1);
-        Node destination = new Node(char2);
+        Node<String> start = new Node<>(char1);
+        Node<String> destination = new Node<>(char2);
         if (!(g.containsNode(start) && g.containsNode(destination))) {
             throw new IllegalArgumentException("Graph must contain start and destination nodes.");
         }
 
-        Queue<Node> workList = new LinkedList<>();
-        Map<Node, List<Edge>> path = new HashMap<>();
+        Queue<Node<String>> workList = new LinkedList<>();
+        Map<Node<String>, List<Edge<String,String>>> path = new HashMap<>();
 
         workList.add(start);
         path.put(start, new ArrayList<>());
 
         while (!workList.isEmpty()) {
-            Node parent = workList.remove();
+            Node<String> parent = workList.remove();
             if (parent.equals(destination)) return new ArrayList<>(path.get(parent));
 
-            List<Edge> sortedEdges = new ArrayList<>(g.getAllEdges(parent));
+            List<Edge<String,String>> sortedEdges = new ArrayList<>(g.getAllEdges(parent));
             sortedEdges.sort(new EdgeComparator());
 
-            for (Edge e: sortedEdges) {
+            for (Edge<String,String> e: sortedEdges) {
                 if (!path.containsKey(e.getChild())) {
-                    List<Edge> currentPath = new ArrayList<>(path.get(parent));
-                    List<Edge> newPath = new ArrayList<>(currentPath);
+                    List<Edge<String,String>> currentPath = new ArrayList<>(path.get(parent));
+                    List<Edge<String,String>> newPath = new ArrayList<>(currentPath);
                     newPath.add(e);
                     path.put(e.getChild(), newPath);
                     workList.add(e.getChild());
@@ -132,7 +132,7 @@ public class MarvelPaths {
     /**
      * Implements a Comparator to compare two edges
      */
-    private static class EdgeComparator implements Comparator<Edge> {
+    private static class EdgeComparator implements Comparator<Edge<String,String>> {
         /**
          * Compares two edges where child nodes are compared first, followed by edge label names
          * (if the child nodes are the same).
@@ -143,7 +143,7 @@ public class MarvelPaths {
          * 0 if first edge is alphabetically equivalent to second edge.
          * @throws IllegalArgumentException if either of given edges are null
          */
-        public int compare(Edge e1, Edge e2) {
+        public int compare(Edge<String,String> e1, Edge<String,String> e2) {
             if (e1 == null || e2 == null) throw new IllegalArgumentException();
             if (!e1.getChild().equals(e2.getChild())) {
                 return e1.getChild().getData().compareTo(e2.getChild().getData());

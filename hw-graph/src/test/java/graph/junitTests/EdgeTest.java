@@ -15,12 +15,12 @@ public class EdgeTest {
     @Rule
     public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
 
-    private final Node a = new Node("a");
-    private final Node b = new Node("b");
+    private final Node<String> a = new Node<>("a");
+    private final Node<String> b = new Node<>("b");
 
-    private final Edge AB1 = new Edge("AB1", b);
-    private final Edge AB2 = new Edge("AB2", b);
-    private final Edge AB1Prime = new Edge("AB1", b);
+    private final Edge<String,String> AB1 = new Edge<>("AB1", b);
+    private final Edge<String,String> AB2 = new Edge<>("AB2", b);
+    private final Edge<String,String> AB1Prime = new Edge<>("AB1", b);
 
 
     /**
@@ -62,10 +62,5 @@ public class EdgeTest {
         assertEquals("AB1".hashCode() ^ "b".hashCode(), AB1.hashCode());
     }
 
-    @Test
-    public void testToString() {
-        assertEquals("b(AB1)", AB1.toString());
-        assertEquals("b(AB2)", AB2.toString());
-    }
 
 }

@@ -31,7 +31,7 @@ public class GraphTestDriver {
     /**
      * String -> Graph: maps the names of graphs to the actual graph
      **/
-    private final Map<String, DLGraph> graphs = new HashMap<String, DLGraph>();
+    private final Map<String, DLGraph<String,String>> graphs = new HashMap<>();
     private final PrintWriter output;
     private final BufferedReader input;
 
@@ -116,7 +116,7 @@ public class GraphTestDriver {
     }
 
     private void createGraph(String graphName) {
-        graphs.put(graphName, new DLGraph());
+        graphs.put(graphName, new DLGraph<>());
         output.println("created graph " + graphName);
     }
 
@@ -132,8 +132,8 @@ public class GraphTestDriver {
     }
 
     private void addNode(String graphName, String nodeName) {
-        DLGraph g = graphs.get(graphName);
-        g.addNode(new Node(nodeName));
+        DLGraph<String,String> g = graphs.get(graphName);
+        g.addNode(new Node<>(nodeName));
         output.println("added node " + nodeName + " to " + graphName);
     }
 
@@ -152,8 +152,8 @@ public class GraphTestDriver {
 
     private void addEdge(String graphName, String parentName, String childName,
                          String edgeLabel) {
-        DLGraph g = graphs.get(graphName);
-        g.addEdge(new Node(parentName), new Node(childName), edgeLabel);
+        DLGraph<String,String> g = graphs.get(graphName);
+        g.addEdge(new Node<>(parentName), new Node<>(childName), edgeLabel);
         output.println("added edge " + edgeLabel + " from " + parentName + " to "
                         + childName + " in " + graphName);
     }
@@ -168,11 +168,12 @@ public class GraphTestDriver {
     }
 
     private void listNodes(String graphName) {
-        DLGraph g = graphs.get(graphName);
+        DLGraph<String,String> g = graphs.get(graphName);
         String nodeList = graphName + " contains:";
-        List<Node> sortedNodes = new ArrayList<>(g.getAllNodes());
+        List<Node<String>> sortedNodes = new ArrayList<>(g.getAllNodes());
         Collections.sort(sortedNodes);
-        for (Node n: sortedNodes) nodeList += " " + n;
+        for (Node<String> n: sortedNodes) nodeList += " " + n.getData();
+
         output.println(nodeList);
 
     }
@@ -190,18 +191,18 @@ public class GraphTestDriver {
 
 
     private void listChildren(String graphName, String parentName) {
-        DLGraph g = graphs.get(graphName);
-        List<Edge> edges = new ArrayList<>(g.getAllEdges(new Node(parentName)));
+        DLGraph<String,String> g = graphs.get(graphName);
+        List<Edge<String,String>> edges = new ArrayList<>(g.getAllEdges(new Node<>(parentName)));
         edges.sort(new EdgeComparator());
         output.print("the children of " + parentName + " in " + graphName + " are:");
-        for (Edge e: edges) output.print(" " + e.getChild() + "(" + e.getLabel() + ")");
+        for (Edge e: edges) output.print(" " + e.getChild().getData() + "(" + e.getLabel() + ")");
         output.println();
     }
 
     /**
      * Implements a Comparator to compare two edges
      */
-    private static class EdgeComparator implements Comparator<Edge> {
+    private static class EdgeComparator implements Comparator<Edge<String,String>> {
         /**
          * Compares two edges where child nodes are compared first, followed by edge label names
          * (if the child nodes are the same).
@@ -212,7 +213,7 @@ public class GraphTestDriver {
          * 0 if first edge is alphabetically equivalent to second edge.
          * @throws IllegalArgumentException if either of given edges are null
          */
-        public int compare(Edge e1, Edge e2) {
+        public int compare(Edge<String,String> e1, Edge<String,String> e2) {
             if (e1 == null || e2 == null) throw new IllegalArgumentException();
             if (e1.getChild().compareTo(e2.getChild()) != 0) {
                 return e1.getChild().compareTo(e2.getChild());

@@ -1,36 +1,36 @@
 package graph;
 
 /**
- * This class represents a single, immutable node storing data as a String.
+ * This class represents a single, immutable node storing some data
  *
  * Specification fields:
- *  @spec.specfield data : String  // The information stored within this node.
+ *  @spec.specfield data : E  // The information stored within this node
  *
  * Abstract Invariant:
  *  A node's data stored are never be null.
  */
-public class Node implements Comparable<Node> {
+public class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
 
     /**
      * Holds the data of the Node.
      */
-    private final String data;
+    private final E data;
 
     // Abstraction Function (this):
-    // Node, n, represents some data of type String
+    // Node, n, represents some data
     // where n.data == this.data.
 
     // Representation Invariant for every Node n:
     // data stored within  Node n is never null
 
     /**
-     * Constructs a new Node with the given String representing the Node
+     * Constructs a new Node with the given data representing the Node
      *
-     * @param data the String this node represents
+     * @param data the value this node represents
      * @spec.requires data != null
      * @spec.effects Constructs a new Node equal to "data".
      */
-    public Node(String data) {
+    public Node(E data) {
         this.data = data;
         checkRep();
     }
@@ -43,12 +43,12 @@ public class Node implements Comparable<Node> {
     }
 
     /**
-     * Returns the String stored within "data" of this Node
+     * Returns the data stored within "data" of this Node
      * @spec.requires this != null
      *
-     * @return the String representing this Node
+     * @return the data representing this Node
      */
-    public String getData() {
+    public E getData() {
         return this.data;
     }
 
@@ -62,8 +62,8 @@ public class Node implements Comparable<Node> {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof Node)) return false;
-        Node n = (Node) obj;
+        if (!(obj instanceof Node<?>)) return false;
+        Node<?> n = (Node<?>) obj;
         return this.data.equals(n.data);
     }
 
@@ -77,16 +77,6 @@ public class Node implements Comparable<Node> {
         return data.hashCode();
     }
 
-    /**
-     * Returns a string representation of this Node. A valid example output with data = "Hello World"
-     * is "Hello World".
-     *
-     * @return a String representation of the data stored in this in the form "{data}"
-     */
-    @Override
-    public String toString() {
-        return this.data;
-    }
 
     /**
      * Compares this node to another object of type Node
@@ -97,7 +87,7 @@ public class Node implements Comparable<Node> {
      *         0 if this == other
      */
     @Override
-    public int compareTo(Node other) {
+    public int compareTo(Node<E> other) {
         other.checkRep();
         return this.data.compareTo(other.data);
     }
