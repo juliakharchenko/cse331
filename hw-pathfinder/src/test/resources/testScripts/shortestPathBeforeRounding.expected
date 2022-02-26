@@ -1,0 +1,18 @@
+# Find a path with Dijkstra's algorithm where the
+# shortest path between two nodes is different
+# before rounding and after rounding
+
+created graph roundedGraph
+
+added node A to roundedGraph
+added node B to roundedGraph
+added node C to roundedGraph
+
+added edge 3.778 from A to B in roundedGraph
+added edge 4.117 from B to C in roundedGraph
+added edge 7.895 from A to C in roundedGraph
+
+path from A to C:
+A to B with weight 3.778
+B to C with weight 4.117
+total cost: 7.895

@@ -1,20 +1,20 @@
 package graph;
 
 /**
- * This class represents a single, immutable node storing some data
+ * This class represents a single, immutable node represented by type N.
  *
  * Specification fields:
- *  @spec.specfield data : E  // The information stored within this node
+ *  @spec.specfield data : N  // The information stored within this node
  *
  * Abstract Invariant:
  *  A node's data stored are never be null.
  */
-public class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
+public class Node<N> {
 
     /**
      * Holds the data of the Node.
      */
-    private final E data;
+    private final N data;
 
     // Abstraction Function (this):
     // Node, n, represents some data
@@ -30,7 +30,7 @@ public class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
      * @spec.requires data != null
      * @spec.effects Constructs a new Node equal to "data".
      */
-    public Node(E data) {
+    public Node(N data) {
         this.data = data;
         checkRep();
     }
@@ -48,7 +48,7 @@ public class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
      *
      * @return the data representing this Node
      */
-    public E getData() {
+    public N getData() {
         return this.data;
     }
 
@@ -77,18 +77,4 @@ public class Node<E extends Comparable<E>> implements Comparable<Node<E>> {
         return data.hashCode();
     }
 
-
-    /**
-     * Compares this node to another object of type Node
-     *
-     * @param other the other Node object in comparison
-     * @return positive integer if data of this is lexicographically greater than data of other
-     *         negative integer if data of this is lexicographically less than data of other
-     *         0 if this == other
-     */
-    @Override
-    public int compareTo(Node<E> other) {
-        other.checkRep();
-        return this.data.compareTo(other.data);
-    }
 }

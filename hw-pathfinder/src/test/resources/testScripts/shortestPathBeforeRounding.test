@@ -1,0 +1,15 @@
+# Find a path with Dijkstra's algorithm where the
+# shortest path between two nodes is different
+# before rounding and after rounding
+
+CreateGraph roundedGraph
+
+AddNode roundedGraph A
+AddNode roundedGraph B
+AddNode roundedGraph C
+
+AddEdge roundedGraph A B 3.77781
+AddEdge roundedGraph B C 4.11675
+AddEdge roundedGraph A C 7.89481
+
+FindPath roundedGraph A C

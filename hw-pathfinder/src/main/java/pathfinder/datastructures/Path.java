@@ -16,8 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * This represents an immutable path between two cartesian coordinate points, particularly
- * Path#getStart() and Path#getEnd(). Also contains a cached
+ * This represents an immutable path represented by type T between two cartesian coordinate points,
+ * particularly Path#getStart() and Path#getEnd(). Also contains a cached
  * version of the total cost along this path, for efficient repeated access.
  */
 public class Path<T> implements Iterable<Path<T>.Segment> {
@@ -176,7 +176,7 @@ public class Path<T> implements Iterable<Path<T>.Segment> {
         if(this.getClass() != obj.getClass()) {
             return false;
         }
-        Path<T> other = (Path<T>) obj;
+        Path<?> other = (Path<?>) obj;
         if(this.path.size() != other.path.size()) {
             return false;
         }
@@ -208,6 +208,8 @@ public class Path<T> implements Iterable<Path<T>.Segment> {
         }
         return sb.toString();
     }
+
+
 
     /**
      * Segment represents a single segment as part of a longer, more complex path between points.
@@ -307,7 +309,7 @@ public class Path<T> implements Iterable<Path<T>.Segment> {
                 return false;
             }
 
-            Path<T>.Segment other = (Path<T>.Segment) obj;
+            Path<?>.Segment other = (Path<?>.Segment) obj;
             return other.getStart().equals(this.getStart())
                    && other.getEnd().equals(this.getEnd())
                    && (Double.compare(this.cost, other.cost) == 0);

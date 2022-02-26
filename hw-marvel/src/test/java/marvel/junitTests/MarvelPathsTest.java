@@ -23,14 +23,10 @@ public class MarvelPathsTest {
     }
 
     @Test (expected = IllegalArgumentException.class)
-    public void buildGraphNullFile() {
-        MarvelPaths.buildGraph(null);
-    }
+    public void buildGraphNullFile() { MarvelPaths.buildGraph(null); }
 
     @Test (expected = IllegalArgumentException.class)
-    public void bfsOnNullGraph() {
-        MarvelPaths.shortestPath(null, "LEBRON-JAMES", "MICHAEL-JORDAN");
-    }
+    public void bfsOnNullGraph() { MarvelPaths.shortestPath(null, "LEBRON-JAMES", "MICHAEL-JORDAN"); }
 
     @Test (expected = IllegalArgumentException.class)
     public void bfsWithNullStartCharacter() {

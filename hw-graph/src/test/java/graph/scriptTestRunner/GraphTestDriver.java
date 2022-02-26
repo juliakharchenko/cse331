@@ -171,7 +171,7 @@ public class GraphTestDriver {
         DLGraph<String,String> g = graphs.get(graphName);
         String nodeList = graphName + " contains:";
         List<Node<String>> sortedNodes = new ArrayList<>(g.getAllNodes());
-        Collections.sort(sortedNodes);
+        sortedNodes.sort(new NodeComparator());
         for (Node<String> n: sortedNodes) nodeList += " " + n.getData();
 
         output.println(nodeList);
@@ -205,7 +205,8 @@ public class GraphTestDriver {
     private static class EdgeComparator implements Comparator<Edge<String,String>> {
         /**
          * Compares two edges where child nodes are compared first, followed by edge label names
-         * (if the child nodes are the same).
+         * (if the child nodes are the same). Labels of edges are represented by Strings and Nodes
+         * are represented by Strings.
          * @param e1 First edge looked at
          * @param e2 Second edge looked at
          * @return a negative integer if first edge is alphabetically less than second edge,
@@ -215,12 +216,33 @@ public class GraphTestDriver {
          */
         public int compare(Edge<String,String> e1, Edge<String,String> e2) {
             if (e1 == null || e2 == null) throw new IllegalArgumentException();
-            if (e1.getChild().compareTo(e2.getChild()) != 0) {
-                return e1.getChild().compareTo(e2.getChild());
+            if (e1.getChild().getData().compareTo(e2.getChild().getData()) != 0) {
+                return e1.getChild().getData().compareTo(e2.getChild().getData());
             }
             return e1.getLabel().compareTo(e2.getLabel());
         }
     }
+
+    /**
+     * Implements a Comparator to compare two nodes
+     */
+    private static class NodeComparator implements Comparator<Node<String>> {
+        /**
+         * Compares two nodes represented by type String where nodes are compared
+         * alphabetically.
+         * @param n1 First node looked at
+         * @param n2 Second node looked at
+         * @return a negative integer if first node is alphabetically less than second node,
+         * a positive integer if first node is alphabetically greater than second node,
+         * 0 if first node is alphabetically equivalent to second node.
+         * @throws IllegalArgumentException if either of given nodes are null
+         */
+        public int compare(Node<String> n1, Node<String> n2) {
+            if (n1 == null || n2 == null) throw new IllegalArgumentException();
+            return n1.getData().compareTo(n2.getData());
+        }
+    }
+
     /**
      * This exception results when the input file cannot be parsed properly
      **/

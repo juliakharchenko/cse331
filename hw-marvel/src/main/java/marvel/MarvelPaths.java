@@ -55,7 +55,8 @@ public class MarvelPaths {
     }
 
     /**
-     * Constructs a directed, label graph based on the information in the file.
+     * Constructs a directed, label graph based on the information in the file. Nodes in graph
+     * are represented by type String and labels of edges are represented by type String.
      * @param filename the file that the graph is being created from
      * @return DLGraph constructed from given file, empty graph if file is empty
      * @throws IllegalArgumentException if filename is null
@@ -135,7 +136,8 @@ public class MarvelPaths {
     private static class EdgeComparator implements Comparator<Edge<String,String>> {
         /**
          * Compares two edges where child nodes are compared first, followed by edge label names
-         * (if the child nodes are the same).
+         * (if the child nodes are the same). Labels of edges are represented by Doubles while Nodes
+         * are represented by Strings.
          * @param e1 First edge looked at
          * @param e2 Second edge looked at
          * @return a negative integer if first edge is alphabetically less than second edge,

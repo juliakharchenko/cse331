@@ -4,7 +4,8 @@ import java.util.*;
 
 /**
  * This class represents a mutable, directed, labeled graph. This graph consists of
- * Nodes that store data in them and Edges that connect Nodes together and have labels.
+ * Nodes that are represented by type N  in them and Edges that connect Nodes together and
+ * have labels represented by type E.
  *
  * Specification fields:
  * @spec.specfield graph : Map of Nodes with each Node corresponding to a Set of Edges
@@ -16,7 +17,7 @@ import java.util.*;
  * contain null Nodes or any null Edges within the set of Edges for that given Node.
  */
 
-public class DLGraph<N extends Comparable<N>, E> {
+public class DLGraph<N, E> {
 
     /**
      * Holds the boolean value of whether large tests is checkRep() will be performed

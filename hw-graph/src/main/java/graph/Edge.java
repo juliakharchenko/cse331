@@ -1,8 +1,8 @@
 package graph;
 
 /**
- * This class represents a single, immutable, directed edge. An edge points
- * to a destination Node (child node). Edges also store data representing
+ * This class represents a single, immutable, directed edge represented by type E. An edge points
+ * to a destination Node (child node) represented by type N. Edges also store data representing
  * the label of the edge.
  *
  * A directed edge means the edge is one-way (Ex. Edge 'A' points to Node B in that direction
@@ -15,7 +15,7 @@ package graph;
  * Abstract Invariant:
  * The end point of the edge (child node) and the label stored are never null.
  */
-public class Edge<E, N extends Comparable<N>> {
+public class Edge<E, N> {
 
     /**
      * Holds the label of the edge.

@@ -1,2 +1,7 @@
 Briefly list any changes you made to your graph class during hw-pathfinder, and why you made those changes.
 
+Other than making changes based on converting my graph ADT to support generics, I removed the implementation
+of my comparable interface on my Node class which was causing some issues when dealing with graphs with nodes
+of type Point in CampusMap.java since Point doesn't implement Comparable. Since I needed to make sure sorting worked
+in the test driver in hw-graph, hw-marvel, and hw-pathfinder, I created a NodeComparator (similar to my EdgeComparator
+class) static inner class in all of those files to handle sorting a list of nodes of type String.
