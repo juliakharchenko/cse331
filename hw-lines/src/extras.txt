@@ -1,10 +1,18 @@
 CSE 331 Homework.  Answers to written questions.
 Edit this file to supply your answers.
 
-Name:  <replace this with your name>
+Name:  Saanav Somani
 
 Describe any additional functionality you added to your application, or any
 significant changes you made to the starter code beyond the basic requirements
 of the assignment, below:
 
+Additional functionality that I added to my application was the ability to enter
+in coordinates of a point and that point being displayed onto the map. This was one
+of the extra credit options that I implemented. In order to do this I created a
+Point interface to represent a single point and a PointList class (similar to EdgeList)
+that allows users to input points into a text field and stores the information about that
+point. I also created an Edge interface to represent an edge with the coordinates of the ends
+of the point and the color of the edge. This was implemented in my EdgeList class whose prop
+represented an array of Edges. Other than that no significant changes were made.
 

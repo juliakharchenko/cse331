@@ -10,22 +10,22 @@
  */
 
 import React, {Component} from 'react';
-import {Edge} from "./Edge";
+import {Point} from "./Point";
 
-interface EdgeListProps {
-    onChange(edges: Edge[]): void;  // called when a new edge list is ready
+interface PointListProps {
+    onChange(points: Point[]): void;  // called when a new edge list is ready
 }
 
-interface EdgeListState {
+interface PointListState {
     textValue: string;
 }
 
 /**
- * A text field that allows the user to enter the list of edges.
+ * A text field that allows the user to enter the list of points.
  * Also contains the buttons that the user will use to interact with the app.
  */
-class EdgeList extends Component<EdgeListProps, EdgeListState> {
-    constructor(props: EdgeListProps) {
+class PointList extends Component<PointListProps, PointListState> {
+    constructor(props: PointListProps) {
         super(props);
         this.state = {
             textValue: "Type here... ",
@@ -52,20 +52,20 @@ class EdgeList extends Component<EdgeListProps, EdgeListState> {
             return;
         }
 
-        // stores data entered into edge test box as an array
+        // stores data entered into point test box as an array
         // where each element in data represents the string
         // representation of a single edge
         let data: string[] = str.split("\n");
 
-        // stores an array of edges based on data given by user
-        let edgeList: Edge[] = [];
+        // stores an array of points based on data given by user
+        let pointList: Point[] = [];
 
         for (let i = 0; i < data.length; i++) {
-            // stores the data of one single edge into an array
-            let oneEdge: string[] = data[i].split(" ");
+            // stores the data of one single point into an array
+            let onePoint: string[] = data[i].split(" ");
 
-            for (let j = 0; j < oneEdge.length - 1; j++) {
-                let parsedInt = parseInt(oneEdge[j]);
+            for (let j = 0; j < onePoint.length; j++) {
+                let parsedInt = parseInt(onePoint[j]);
 
                 //checks if the given coordinate is a valid integer.
                 if (isNaN(parsedInt)) {
@@ -80,34 +80,30 @@ class EdgeList extends Component<EdgeListProps, EdgeListState> {
                     return;
                 }
             }
-            if (typeof (oneEdge[oneEdge.length - 1]) !== 'string') {
-                alert("Invalid color type! Color must be string!");
-                return;
-            }
-            // uses given data from user to add an edge to the list of edges
-            edgeList.push({x1:parseInt(oneEdge[0]), y1:parseInt(oneEdge[1]),
-                x2: parseInt(oneEdge[2]), y2: parseInt(oneEdge[3]),color: oneEdge[4], key: i.toString()});
-            console.log(oneEdge.toString());
+            // uses given data from user to add a point to the list of points
+            pointList.push({
+                x1: parseInt(onePoint[0]), y1: parseInt(onePoint[1])});
+            console.log(onePoint.toString());
         }
-        console.log(edgeList.length);
-        this.props.onChange(edgeList);
+        console.log(pointList.length);
+        this.props.onChange(pointList);
     }
 
     render() {
         return (
-            <div id="edge-list">
-                Edges <br/>
+            <div id="point-list">
+                Points <br/>
                 <textarea
                     rows={5}
                     cols={30}
                     value={this.state.textValue}
-                    onChange = {(event) => this.textChange(event)}
+                onChange = {(event) => this.textChange(event)}
                 /> <br/>
-                <button onClick={() => this.parseData(this.state.textValue)}>Draw</button>
-                <button onClick={() => this.clearText()}>Clear</button>
-            </div>
-        );
+        <button onClick={() => this.parseData(this.state.textValue)}>Draw</button>
+        <button onClick={() => this.clearText()}>Clear</button>
+        </div>
+    );
     }
 }
 
-export default EdgeList;
+export default PointList;

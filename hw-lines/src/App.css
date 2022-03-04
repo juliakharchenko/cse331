@@ -50,6 +50,15 @@ input {
     margin: 2px 5px;
 }
 
+#point-list {
+    text-align: center;
+    margin: 5px;
+}
+
+#point-list button {
+    margin: 2px 5px;
+}
+
 /* Centers the "Line Mapper!" text, which is in a <p> (paragraph) tag inside the <App /> component, and has an
 ID of "app-title". Also makes the text bigger, bold, and adds some space around the title. */
 #app-title {
