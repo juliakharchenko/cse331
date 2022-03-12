@@ -1,9 +1,11 @@
 CSE 331 Homework Answers:
 
-Your Name:
+Your Name: Saanav Somani
 
 List any additional features or functionality you implemented
 in your CampusPaths application below. Only things listed here
 will be considered for extra credit.
-
+Additional functionality that I added to my application was that the start and end buildings
+are displayed on the map as well as the path between them. I created a Point class that holds
+x and y coordinates.
 

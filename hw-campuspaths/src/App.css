@@ -31,3 +31,29 @@ file was empty.
     width: 800px;
     height: 600px;
 }
+
+#uw-mapper {
+    text-align: center;
+    background-color: slategray;
+    color: white;
+}
+
+#dropdown {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.find-path {
+    background-color: gold;
+    color: purple;
+}
+
+.reset {
+    background-color: red;
+    color: black;
+}
+
+button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

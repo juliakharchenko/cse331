@@ -38,9 +38,7 @@ interface MapProps {
   drawPoints: Point[];
 }
 
-interface MapState {
-
-}
+interface MapState {}
 
 class Map extends Component<MapProps, MapState> {
     constructor(props: MapProps) {
